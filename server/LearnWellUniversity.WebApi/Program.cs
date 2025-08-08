@@ -1,6 +1,9 @@
+using LearnWellUniversity.Infrastructure.Extensions;
 using LearnWellUniversity.WebApi.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
+
+InitializeEnvironmentSetup.Initialize(builder.Configuration);
 
 // Add services to the container.
 
@@ -8,18 +11,20 @@ builder.Services.AddControllers();
 
 builder.Services.AddApiDocumentations();
 
-builder.Services.AddApplicationServices();
+builder.Services.AddInfrastructureServices();
 
+builder.Services.RegisterApplicationServices();
 
 
 builder.Host.EnableSeqLoggerUsingSerilog();
 
 var app = builder.Build();
-
+    
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {    
     app.UseDeveloperExceptionPage();
+    app.UseDbMigration();
 }
 
 app.UseApiDocumentation();

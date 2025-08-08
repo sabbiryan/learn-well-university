@@ -3,10 +3,10 @@ using LearnWellUniversity.Application.Services;
 
 namespace LearnWellUniversity.WebApi.Extensions
 {
-    public static class DependencyRegisterServiceExtension
+    public static class ApplicationServiceRegisterExtension
     {
 
-        public static IServiceCollection AddApplicationServices(this IServiceCollection services)
+        public static IServiceCollection RegisterApplicationServices(this IServiceCollection services)
         {
             var servicesNamespace = typeof(ApplicationServiceBase).Namespace!;
 

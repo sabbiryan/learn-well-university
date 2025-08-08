@@ -4,6 +4,7 @@
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
 USER $APP_UID
 WORKDIR /app
+ENV DOTNET_RUNNING_IN_CONTAINER=true
 EXPOSE 8080
 EXPOSE 8081
 
