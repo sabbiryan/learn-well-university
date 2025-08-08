@@ -1,0 +1,6 @@
+@LearnWellUniversity.WebApi_HostAddress = http://localhost:5009
+
+GET {{LearnWellUniversity.WebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

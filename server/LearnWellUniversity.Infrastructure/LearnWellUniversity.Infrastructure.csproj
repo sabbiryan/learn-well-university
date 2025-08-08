@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.8" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.8" />
+    <PackageReference Include="Microsoft.OpenApi" Version="1.6.23" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Persistences\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LearnWellUniversity.Application\LearnWellUniversity.Application.csproj" />
+    <ProjectReference Include="..\LearnWellUniversity.Domain\LearnWellUniversity.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
