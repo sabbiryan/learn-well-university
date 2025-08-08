@@ -10,6 +10,10 @@ builder.Services.AddApiDocumentations();
 
 builder.Services.AddApplicationServices();
 
+
+
+builder.Host.EnableSeqLoggerUsingSerilog();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
