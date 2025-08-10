@@ -10,9 +10,9 @@ using System.Net;
 namespace LearnWellUniversity.WebApi.Controllers
 {
     [AllowAnonymous]
-    public class AuthControllerController(IUserService userService) : ApiControllerBaseV1
+    public class AuthController(IUserService userService) : ApiControllerBaseV1
     {
-        [HttpPost("register")]
+        [HttpPost("Register")]
         public async Task<ApiResponse<AuthResponse>> Register(RegisterRequest request)
         {
             try
@@ -27,7 +27,7 @@ namespace LearnWellUniversity.WebApi.Controllers
             }
         }
 
-        [HttpPost("login")]
+        [HttpPost("Login")]
         public async Task<ApiResponse<AuthResponse>> Login(LoginRequest request)
         {
             try

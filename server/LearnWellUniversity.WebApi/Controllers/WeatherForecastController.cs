@@ -8,7 +8,7 @@ namespace LearnWellUniversity.WebApi.Controllers
     public class WeatherForecastController(ILogger<WeatherForecastController> logger, IWeaterForecastService weaterForecastService) : ApiControllerBaseV1
     {
       
-        [HttpGet(Name = "GetWeatherForecast")]
+        [HttpGet]
         public ApiResponse<IEnumerable<WeatherForecast>> Get()
         {
 
