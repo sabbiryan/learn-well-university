@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LearnWellUniversity.Infrastructure.Encryptions
+namespace LearnWellUniversity.Application.Encryptions
 {
    
     public class PasswordHasher

@@ -15,6 +15,8 @@ builder.Services.AddInfrastructureServices();
 
 builder.Services.RegisterApplicationServices();
 
+builder.Services.AddJwtAuthentication();
+
 
 builder.Host.EnableSeqLoggerUsingSerilog();
 
@@ -28,11 +30,13 @@ if (app.Environment.IsDevelopment())
     app.UseSeedData();
 }
 
+app.UseHttpsRedirection();
+
 app.UseGlobalExceptionHandler();
 
 app.UseApiDocumentation();
 
-app.UseHttpsRedirection();
+app.UseAuthentication();
 
 app.UseAuthorization();
 

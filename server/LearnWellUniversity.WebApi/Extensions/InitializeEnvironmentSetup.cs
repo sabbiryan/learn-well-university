@@ -13,6 +13,10 @@ namespace LearnWellUniversity.WebApi.Extensions
 
             AppSettingValues.DefaultConnectionString = configuration.GetConnectionString("DefaultConnection") ?? AppSettingValues.DefaultConnectionString;
 
+            AppSettingValues.JwtKey = configuration[AppSettingKeys.JwtKey] ?? AppSettingValues.JwtKey;
+            AppSettingValues.JwtIssuer = configuration[AppSettingKeys.JwtIssuer] ?? AppSettingValues.JwtIssuer;
+            AppSettingValues.JwtAudience = configuration[AppSettingKeys.JwtAudience] ?? AppSettingValues.JwtAudience;
+
         }
 
     }
