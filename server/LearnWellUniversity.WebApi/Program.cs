@@ -19,13 +19,16 @@ builder.Services.RegisterApplicationServices();
 builder.Host.EnableSeqLoggerUsingSerilog();
 
 var app = builder.Build();
-    
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {    
     app.UseDeveloperExceptionPage();
     app.UseDbMigration();
+    app.UseSeedData();
 }
+
+app.UseGlobalExceptionHandler();
 
 app.UseApiDocumentation();
 

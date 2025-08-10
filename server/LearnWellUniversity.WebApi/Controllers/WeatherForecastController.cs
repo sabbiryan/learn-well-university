@@ -1,3 +1,4 @@
+using LearnWellUniversity.Application.Common;
 using LearnWellUniversity.Application.Contracts;
 using LearnWellUniversity.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -8,14 +9,14 @@ namespace LearnWellUniversity.WebApi.Controllers
     {
       
         [HttpGet(Name = "GetWeatherForecast")]
-        public IEnumerable<WeatherForecast> Get()
+        public ApiResponse<IEnumerable<WeatherForecast>> Get()
         {
 
             var weatherForecasts = weaterForecastService.GetWeatherForecast();
 
             logger.LogInformation("Resposne with {count} weather forecasts.", weatherForecasts.Count());
 
-            return weatherForecasts;
+            return new ApiResponse<IEnumerable<WeatherForecast>>(weatherForecasts);
         }
     }
 }

@@ -10,13 +10,16 @@ namespace LearnWellUniversity.Infrastructure.Extensions
 
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
         {
-            services.AddDbContextFactory<AppDbContext>(options =>
+
+            services.AddDbContext<AppDbContext>(options =>
                 {
                     
                     options.UseNpgsql(AppSettingValues.DefaultConnectionString, npgsqlOptions =>
                     {
                         npgsqlOptions.EnableRetryOnFailure(5);
-                    });
+                        npgsqlOptions.MigrationsAssembly(typeof(AppDbContext).Assembly);
+                    })
+                    .UseSnakeCaseNamingConvention();
                 }
             );
 
