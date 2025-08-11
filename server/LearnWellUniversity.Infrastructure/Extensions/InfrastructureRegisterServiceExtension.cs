@@ -2,6 +2,7 @@
 using LearnWellUniversity.Application.Contracts.UoW;
 using LearnWellUniversity.Infrastructure.Auths;
 using LearnWellUniversity.Infrastructure.Constants;
+using LearnWellUniversity.Infrastructure.Interceptors;
 using LearnWellUniversity.Infrastructure.Persistences;
 using LearnWellUniversity.Infrastructure.Persistences.UoW;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +16,7 @@ namespace LearnWellUniversity.Infrastructure.Extensions
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
         {
 
-            services.AddDbContext<AppDbContext>(options =>
+            services.AddDbContext<AppDbContext>((serviceProvider, options) =>
                 {
                     
                     options.UseNpgsql(AppSettingValues.DefaultConnectionString, npgsqlOptions =>
@@ -24,10 +25,14 @@ namespace LearnWellUniversity.Infrastructure.Extensions
                         npgsqlOptions.MigrationsAssembly(typeof(AppDbContext).Assembly);
                     })
                     .UseSnakeCaseNamingConvention();
+
+                    var interceptor = serviceProvider.GetRequiredService<AuditSaveChangesInterceptor>();
+                    options.AddInterceptors(interceptor);
                 }
             );
 
             services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
+            services.AddScoped<IUserContext, UserContext>();
 
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 

@@ -1,11 +1,6 @@
 ﻿using LearnWellUniversity.Domain.Entities.Bases;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace LearnWellUniversity.Domain.Entities.Securities
+namespace LearnWellUniversity.Domain.Entities.Auths
 {
     public class User: PersonBase<int>
     {
@@ -17,6 +12,8 @@ namespace LearnWellUniversity.Domain.Entities.Securities
         public bool IsEmailConfirmed { get; set; }
         public bool IsPasswordChangeOnFirstLogin { get; set; }
 
+
+        public virtual ICollection<UserRole> UserRoles { get; set; } = new HashSet<UserRole>();
         public virtual ICollection<Staff> Staffs { get; set; } = new HashSet<Staff>();
         public virtual ICollection<Student> Students { get; set; } = new HashSet<Student>();
     }

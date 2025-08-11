@@ -1,5 +1,5 @@
-﻿using LearnWellUniversity.Domain.Entities.Bases;
-using LearnWellUniversity.Domain.Entities.Securities;
+﻿using LearnWellUniversity.Domain.Entities.Auths;
+using LearnWellUniversity.Domain.Entities.Bases;
 using LearnWellUniversity.Domain.Enums;
 
 namespace LearnWellUniversity.Domain.Entities

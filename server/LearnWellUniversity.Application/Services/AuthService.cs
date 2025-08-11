@@ -2,7 +2,7 @@
 using LearnWellUniversity.Application.Contracts.UoW;
 using LearnWellUniversity.Application.Dtos.Auths;
 using LearnWellUniversity.Application.Encryptions;
-using LearnWellUniversity.Domain.Entities.Securities;
+using LearnWellUniversity.Domain.Entities.Auths;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;

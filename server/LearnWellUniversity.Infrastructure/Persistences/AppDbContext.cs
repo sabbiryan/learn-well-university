@@ -1,5 +1,5 @@
 ﻿using LearnWellUniversity.Domain.Entities;
-using LearnWellUniversity.Domain.Entities.Securities;
+using LearnWellUniversity.Domain.Entities.Auths;
 using LearnWellUniversity.Infrastructure.Persistences.EntityConfigurations;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,7 +7,7 @@ namespace LearnWellUniversity.Infrastructure.Persistences
 {
     public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
     {
-        #region Security
+        #region Auth
 
         public DbSet<Role> Roles { get; set; }
         public DbSet<Resource> Resources { get; set; }

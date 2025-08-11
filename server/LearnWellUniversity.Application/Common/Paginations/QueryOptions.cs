@@ -4,6 +4,7 @@ namespace LearnWellUniversity.Application.Common.Paginations
 {
     public record QueryOptions<T>
     {
+        public Expression<Func<T, bool>>? Search { get; set; }
         public Expression<Func<T, bool>>? Filter { get; set; }
         public Func<IQueryable<T>, IOrderedQueryable<T>>? OrderBy { get; set; }
         public List<Expression<Func<T, object>>> Includes { get; set; } = [];

@@ -1,4 +1,4 @@
-﻿using LearnWellUniversity.Domain.Entities.Securities;
+﻿using LearnWellUniversity.Domain.Entities.Auths;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

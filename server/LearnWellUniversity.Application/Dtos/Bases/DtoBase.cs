@@ -1,4 +1,4 @@
-﻿namespace LearnWellUniversity.Application.Dtos
+﻿namespace LearnWellUniversity.Application.Dtos.Bases
 {
     public abstract record DtoBase<T>
     {

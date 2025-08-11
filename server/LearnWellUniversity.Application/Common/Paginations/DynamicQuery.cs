@@ -8,6 +8,10 @@ namespace LearnWellUniversity.Application.Common.Paginations
 {
     public record DynamicQuery
     {
+        /// <summary>
+        /// Search on all available columns except datetime, including one one nested level navigation 
+        /// </summary>
+        public string? Search { get; set; }
 
         /// <summary>
         /// Set filters value from client as example "Department:IT;Status:Active"

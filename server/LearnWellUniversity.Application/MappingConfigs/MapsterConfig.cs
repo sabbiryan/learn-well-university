@@ -1,11 +1,7 @@
 ﻿using LearnWellUniversity.Application.Dtos;
 using LearnWellUniversity.Domain.Entities;
+using LearnWellUniversity.Domain.Entities.Auths;
 using Mapster;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LearnWellUniversity.Application.MappingConfigs
 {
@@ -31,6 +27,8 @@ namespace LearnWellUniversity.Application.MappingConfigs
             
             config.NewConfig<Address, AddressDto>();
 
+
+            config.NewConfig<User, UserDto>();
 
         }
     }

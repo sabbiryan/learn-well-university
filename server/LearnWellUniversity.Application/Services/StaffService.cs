@@ -3,8 +3,6 @@ using LearnWellUniversity.Application.Contracts;
 using LearnWellUniversity.Application.Contracts.UoW;
 using LearnWellUniversity.Application.Dtos;
 using LearnWellUniversity.Domain.Entities;
-using Mapster;
-using MapsterMapper;
 using System.Linq.Expressions;
 
 namespace LearnWellUniversity.Application.Services
@@ -14,7 +12,7 @@ namespace LearnWellUniversity.Application.Services
 
         public async Task<PaginatedResult<StaffDto>> GetAllStaffAsync(DynamicQuery request)
         {
-            List<Expression<Func<Staff, object>>> includes = [s => s.Department, s => s.PresentAddress, s => s.PermanentAddress];
+            List<Expression<Func<Staff, object>>> includes = [s => s.Department, s => s.PresentAddress!, s => s.PermanentAddress!];
 
             Expression<Func<Staff, StaffDto>> selector = x => new StaffDto()
             {
@@ -29,7 +27,6 @@ namespace LearnWellUniversity.Application.Services
                 PresentAddress = x.PresentAddress != null ? new AddressDto(x.PresentAddress.Street, x.PresentAddress.City, x.PresentAddress.State, x.PresentAddress.ZipCode, x.PresentAddress.Country) : null,
                 PermanentAddress = x.PermanentAddress != null ? new AddressDto(x.PermanentAddress.Street, x.PermanentAddress.City, x.PermanentAddress.State, x.PermanentAddress.ZipCode, x.PermanentAddress.Country) : null
             };
-
 
             var result = await unitOfWork.Repository<Staff>().GetPagedAsync(request, selector, includes);
 

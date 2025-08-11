@@ -1,5 +1,5 @@
 ﻿using LearnWellUniversity.Application.Contracts.Auths;
-using LearnWellUniversity.Domain.Entities.Securities;
+using LearnWellUniversity.Domain.Entities.Auths;
 using LearnWellUniversity.Infrastructure.Constants;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;

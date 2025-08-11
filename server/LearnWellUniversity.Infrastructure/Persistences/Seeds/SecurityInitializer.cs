@@ -1,5 +1,5 @@
 ﻿using LearnWellUniversity.Application.Encryptions;
-using LearnWellUniversity.Domain.Entities.Securities;
+using LearnWellUniversity.Domain.Entities.Auths;
 using LearnWellUniversity.Infrastructure.Persistences.Seeds.Models;
 using Microsoft.Extensions.Logging;
 

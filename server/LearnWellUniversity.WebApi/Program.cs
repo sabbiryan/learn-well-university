@@ -11,6 +11,8 @@ builder.Services.AddControllers();
 
 builder.Services.AddApiDocumentations();
 
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddInfrastructureServices();
 
 builder.Services.RegisterApplicationServices();

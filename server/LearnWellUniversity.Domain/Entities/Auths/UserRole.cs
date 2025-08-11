@@ -1,6 +1,6 @@
 ﻿using LearnWellUniversity.Domain.Entities.Bases;
 
-namespace LearnWellUniversity.Domain.Entities.Securities
+namespace LearnWellUniversity.Domain.Entities.Auths
 {
     public class UserRole: AuditableEntity
     {

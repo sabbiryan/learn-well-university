@@ -15,9 +15,9 @@ namespace LearnWellUniversity.Infrastructure.Persistences.UoW
 
         public IQueryable<T> Query() => _dbSet.AsQueryable();
 
-        public async Task<T?> GetByIdAsync(int id) => await _dbSet.FindAsync(id);
+        public virtual async Task<T?> GetByIdAsync(int id) => await _dbSet.FindAsync(id);
 
-        public async Task<IEnumerable<T>> GetAllAsync() => await _dbSet.AsNoTracking().ToListAsync();
+        public virtual async Task<IEnumerable<T>> GetAllAsync() => await _dbSet.AsNoTracking().ToListAsync();
 
 
         public virtual async Task<PaginatedResult<TResult>> GetPagedAsync<TResult>(
@@ -31,11 +31,12 @@ namespace LearnWellUniversity.Infrastructure.Persistences.UoW
             {
                 query = includes.Aggregate(query, (current, include) => current.Include(include));
             }
-
+            
             
             query = query.ApplyDynamicFilter(queryParams.Filter);
 
-            
+            query = query.ApplyDynamicSearch(queryParams.Search);
+
             query = query.ApplyDynamicSort(queryParams.SortBy, queryParams.Direction);
 
             
@@ -58,6 +59,11 @@ namespace LearnWellUniversity.Infrastructure.Persistences.UoW
         {
             IQueryable<T> query = _dbSet.AsNoTracking();
 
+
+            if (options.Search != null)
+            {
+                query = query.Where(options.Search);
+            }
 
             if (options.Filter != null)
             {
@@ -127,11 +133,11 @@ namespace LearnWellUniversity.Infrastructure.Persistences.UoW
             return await query.Where(predicate).ToListAsync();
         }
 
-        public async Task AddAsync(T entity) => await _dbSet.AddAsync(entity);
+        public virtual async Task AddAsync(T entity) => await _dbSet.AddAsync(entity);
 
-        public void Update(T entity) => _dbSet.Update(entity);
+        public virtual void Update(T entity) => _dbSet.Update(entity);
 
-        public void Remove(T entity) => _dbSet.Remove(entity);
+        public virtual void Remove(T entity) => _dbSet.Remove(entity);
 
        
     }
