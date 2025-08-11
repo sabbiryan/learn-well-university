@@ -3,13 +3,13 @@ using LearnWellUniversity.Application.Contracts;
 using LearnWellUniversity.Application.Contracts.UoW;
 using LearnWellUniversity.Application.Dtos;
 using LearnWellUniversity.Domain.Entities;
-using Microsoft.Extensions.Logging;
+using Mapster;
+using MapsterMapper;
 using System.Linq.Expressions;
 
 namespace LearnWellUniversity.Application.Services
 {
-    public class StaffService(IUnitOfWork unitOfWork,
-        ILogger<StaffService> logger) : ApplicationServiceBase, IStaffService
+    public class StaffService(IUnitOfWork unitOfWork) : ApplicationServiceBase, IStaffService
     {
 
         public async Task<PaginatedResult<StaffDto>> GetAllStaffAsync(DynamicQuery request)
@@ -29,6 +29,7 @@ namespace LearnWellUniversity.Application.Services
                 PresentAddress = x.PresentAddress != null ? new AddressDto(x.PresentAddress.Street, x.PresentAddress.City, x.PresentAddress.State, x.PresentAddress.ZipCode, x.PresentAddress.Country) : null,
                 PermanentAddress = x.PermanentAddress != null ? new AddressDto(x.PermanentAddress.Street, x.PermanentAddress.City, x.PermanentAddress.State, x.PermanentAddress.ZipCode, x.PermanentAddress.Country) : null
             };
+
 
             var result = await unitOfWork.Repository<Staff>().GetPagedAsync(request, selector, includes);
 

@@ -17,6 +17,7 @@ builder.Services.RegisterApplicationServices();
 
 builder.Services.AddJwtAuthentication();
 
+builder.Services.AddMapsterService();
 
 builder.Host.EnableSeqLoggerUsingSerilog();
 
