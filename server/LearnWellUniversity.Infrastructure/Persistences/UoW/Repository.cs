@@ -1,11 +1,8 @@
-﻿using LearnWellUniversity.Application.Contracts.UoW;
+﻿using LearnWellUniversity.Application.Common.Paginations;
+using LearnWellUniversity.Application.Contracts.UoW;
+using LearnWellUniversity.Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LearnWellUniversity.Infrastructure.Persistences.UoW
 {
@@ -21,6 +18,84 @@ namespace LearnWellUniversity.Infrastructure.Persistences.UoW
         public async Task<T?> GetByIdAsync(int id) => await _dbSet.FindAsync(id);
 
         public async Task<IEnumerable<T>> GetAllAsync() => await _dbSet.AsNoTracking().ToListAsync();
+
+
+        public virtual async Task<PaginatedResult<TResult>> GetPagedAsync<TResult>(
+            DynamicQuery queryParams,
+            Expression<Func<T, TResult>> selector,
+            List<Expression<Func<T, object>>>? includes = null)
+        {
+            IQueryable<T> query = _dbSet.AsNoTracking();
+
+            if (includes != null)
+            {
+                query = includes.Aggregate(query, (current, include) => current.Include(include));
+            }
+
+            
+            query = query.ApplyDynamicFilter(queryParams.Filter);
+
+            
+            query = query.ApplyDynamicSort(queryParams.SortBy, queryParams.Direction);
+
+            
+            var totalCount = await query.CountAsync();
+
+            
+            query = query.Skip((queryParams.PageNumber - 1) * queryParams.PageSize)
+                         .Take(queryParams.PageSize);
+
+
+            var items = await query.Select(selector).ToListAsync();
+
+            return new PaginatedResult<TResult>(items, totalCount, queryParams.PageNumber, queryParams.PageSize);
+        }
+
+
+        public virtual async Task<PaginatedResult<TResult>> GetPagedAsync<TResult>(
+            QueryOptions<T> options,
+            Expression<Func<T, TResult>> selector)
+        {
+            IQueryable<T> query = _dbSet.AsNoTracking();
+
+
+            if (options.Filter != null)
+            {
+                query = query.Where(options.Filter);
+            }
+
+
+            if (options.Includes.Count != 0)
+            {
+                query = options.Includes.Aggregate(query, (current, include) => current.Include(include));
+            }
+
+
+            if (options.OrderBy != null)
+            {
+                query = options.OrderBy(query);
+            }
+            else
+            {
+                query = query.OrderBy(e => true);
+            }
+
+            
+            var totalCount = await query.CountAsync();
+
+            
+            query = query
+                .Skip((options.PageNumber - 1) * options.PageSize)
+                .Take(options.PageSize);
+
+
+            var items = await query.Select(selector).ToListAsync();
+
+            var result = new PaginatedResult<TResult>(items, totalCount, options.PageNumber, options.PageSize);
+
+            return result;
+        }
+
 
         public async Task<T?> FindAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes)
         {

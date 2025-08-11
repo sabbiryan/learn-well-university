@@ -1,7 +1,7 @@
-﻿using LearnWellUniversity.Application.Contracts.Jwt;
+﻿using LearnWellUniversity.Application.Contracts.Auths;
 using LearnWellUniversity.Application.Contracts.UoW;
+using LearnWellUniversity.Infrastructure.Auths;
 using LearnWellUniversity.Infrastructure.Constants;
-using LearnWellUniversity.Infrastructure.Jwt;
 using LearnWellUniversity.Infrastructure.Persistences;
 using LearnWellUniversity.Infrastructure.Persistences.UoW;
 using Microsoft.EntityFrameworkCore;

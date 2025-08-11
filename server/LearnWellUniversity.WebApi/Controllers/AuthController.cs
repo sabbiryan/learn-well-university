@@ -1,6 +1,6 @@
 ﻿using LearnWellUniversity.Application.Common;
-using LearnWellUniversity.Application.Contracts;
-using LearnWellUniversity.Application.Dtos;
+using LearnWellUniversity.Application.Contracts.Auths;
+using LearnWellUniversity.Application.Dtos.Auths;
 using LearnWellUniversity.Application.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -10,7 +10,7 @@ using System.Net;
 namespace LearnWellUniversity.WebApi.Controllers
 {
     [AllowAnonymous]
-    public class AuthController(IUserService userService) : ApiControllerBaseV1
+    public class AuthController(IAuthService userService) : ApiControllerBaseV1
     {
         [HttpPost("Register")]
         public async Task<ApiResponse<AuthResponse>> Register(RegisterRequest request)

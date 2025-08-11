@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LearnWellUniversity.Application.Contracts.Jwt
+namespace LearnWellUniversity.Application.Contracts.Auths
 {
     public interface IJwtTokenGenerator
     {

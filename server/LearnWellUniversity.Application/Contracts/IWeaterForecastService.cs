@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LearnWellUniversity.Application.Contracts
 {
-    public interface IWeaterForecastService: IApplicationServiceBase
+    public interface IWeaterForecastService : IApplicationServiceBase
     {
         /// <summary>
         /// Gets the weather forecast for the next 5 days.

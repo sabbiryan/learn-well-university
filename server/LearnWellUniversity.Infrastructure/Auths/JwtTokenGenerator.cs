@@ -1,17 +1,12 @@
-﻿using LearnWellUniversity.Application.Contracts.Jwt;
+﻿using LearnWellUniversity.Application.Contracts.Auths;
 using LearnWellUniversity.Domain.Entities.Securities;
 using LearnWellUniversity.Infrastructure.Constants;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace LearnWellUniversity.Infrastructure.Jwt
+namespace LearnWellUniversity.Infrastructure.Auths
 {
     public class JwtTokenGenerator() : IJwtTokenGenerator
     {
@@ -19,10 +14,10 @@ namespace LearnWellUniversity.Infrastructure.Jwt
         {
             var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-                new Claim(JwtRegisteredClaimNames.UniqueName, user.Email),
-                new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                new Claim(JwtRegisteredClaimNames.Name, user.FullName ?? string.Empty),                
+                new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                new(JwtRegisteredClaimNames.UniqueName, user.Email),
+                new(JwtRegisteredClaimNames.Email, user.Email),
+                new(JwtRegisteredClaimNames.Name, user.FullName ?? string.Empty),                
             };
 
             foreach (var role in roles)

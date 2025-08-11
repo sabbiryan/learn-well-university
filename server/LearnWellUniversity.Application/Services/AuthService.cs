@@ -1,7 +1,6 @@
-﻿using LearnWellUniversity.Application.Contracts;
-using LearnWellUniversity.Application.Contracts.Jwt;
+﻿using LearnWellUniversity.Application.Contracts.Auths;
 using LearnWellUniversity.Application.Contracts.UoW;
-using LearnWellUniversity.Application.Dtos;
+using LearnWellUniversity.Application.Dtos.Auths;
 using LearnWellUniversity.Application.Encryptions;
 using LearnWellUniversity.Domain.Entities.Securities;
 using Microsoft.Extensions.Logging;
@@ -13,9 +12,9 @@ using System.Threading.Tasks;
 
 namespace LearnWellUniversity.Application.Services
 {
-    public class UserService(IUnitOfWork unitOfWork, 
+    public class AuthService(IUnitOfWork unitOfWork, 
         IJwtTokenGenerator jwtTokenGenerator,
-        ILogger<UserService> logger) : ApplicationServiceBase, IUserService
+        ILogger<AuthService> logger) : ApplicationServiceBase, IAuthService
     {
         public async Task<AuthResponse> RegisterAsync(RegisterRequest request)
         {
@@ -24,7 +23,7 @@ namespace LearnWellUniversity.Application.Services
             if (existingUser != null)
                 throw new Exception("User already exists");
 
-            new PasswordHasher().CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
+            PasswordHasher.CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
             var user = new User
             {
@@ -71,7 +70,7 @@ namespace LearnWellUniversity.Application.Services
         {
             var user = await unitOfWork.Repository<User>().FindAsync(x=> x.Email.Equals(request.Email));
 
-            if (user == null || !new PasswordHasher().VerifyPasswordHash(request.Password, user.PasswordHash, user.PasswordSalt))
+            if (user == null || !PasswordHasher.VerifyPasswordHash(request.Password, user.PasswordHash, user.PasswordSalt))
                 throw new Exception("Invalid credentials");
 
             var userRoles = await unitOfWork.Repository<UserRole>().FilterAsync(x => x.UserId == user.Id, x=> x.Role);
