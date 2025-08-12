@@ -1,8 +1,12 @@
 ﻿using LearnWellUniversity.Application.Common.Paginations;
 using LearnWellUniversity.Application.Contracts;
+using LearnWellUniversity.Application.Contracts.Auths;
 using LearnWellUniversity.Application.Contracts.UoW;
 using LearnWellUniversity.Application.Dtos;
+using LearnWellUniversity.Application.Exceptions;
+using LearnWellUniversity.Application.Requestes;
 using LearnWellUniversity.Domain.Entities.Auths;
+using MapsterMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +16,12 @@ using System.Threading.Tasks;
 
 namespace LearnWellUniversity.Application.Services
 {
-    public class UserService(IUnitOfWork unitOfWork) : ApplicationServiceBase, IUserService
+    public class UserService(IUnitOfWork unitOfWork,
+        IAuthService authService,
+        IMapper mapper) : ApplicationService, IUserService
     {
 
-        public async Task<PaginatedResult<UserDto>> GetAllAsync(DynamicQuery request)
+        public async Task<PaginatedResult<UserDto>> GetPagedAsync(DynamicQueryRequest request)
         {
             Expression<Func<User, UserDto>> selector = x => new UserDto()
             {
@@ -36,26 +42,54 @@ namespace LearnWellUniversity.Application.Services
         }
 
 
-        public Task<UserDto?> GetUserByIdAsync(int id)
+        public async Task<UserDto?> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            if (id <= 0) throw new ArgumentOutOfRangeException(nameof(id), "Id must be greater than zero.");
+
+            var user = await unitOfWork.Repository<User>().GetByIdAsync(id);
+
+            if (user == null) return null;
+
+            var result = mapper.Map<UserDto>(user);
+
+            return result;
         }
 
-        public Task AddUserAsync(User user)
+
+        public async Task<int> UpdateAsync(UserUpdateRequest request)
         {
-            throw new NotImplementedException();
+            if (request.Id <= 0) throw new ArgumentOutOfRangeException(nameof(request.Id), "Id must be greater than zero.");
+
+            var user = await unitOfWork.Repository<User>().GetByIdAsync(request.Id);
+
+            if (user == null) throw new EntityNotFoundException($"User with id {request.Id} not found.");
+
+            mapper.Map(request, user);
+
+            unitOfWork.Repository<User>().Update(user);
+
+            await authService.AssingUserToRoles(request.Id, request.RoleIds);
+
+            await unitOfWork.SaveChangesAsync();
+
+            return user.Id;
         }
 
-
-        public Task UpdateUserAsync(User user)
+        public async Task DeleteAsync(int id)
         {
-            throw new NotImplementedException();
-        }
+            if (id <= 0) throw new ArgumentOutOfRangeException(nameof(id), "Id must be greater than zero.");
 
-        public Task DeleteUserAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
+            var user = await unitOfWork.Repository<User>().GetByIdAsync(id);
 
+            if (user == null) throw new EntityNotFoundException($"User with id {id} not found.");
+
+            unitOfWork.Repository<User>().Remove(user);
+
+            await authService.RemoveUserFromRoles(id);
+
+            await unitOfWork.SaveChangesAsync();
+        }
+    
+    
     }
 }

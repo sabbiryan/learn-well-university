@@ -4,9 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LearnWellUniversity.Application.Contracts
+namespace LearnWellUniversity.Application.Dtos.Auths
 {
-    public interface IApplicationServiceBase
-    {
-    }
+    public record TokenResponse(string Token, string Email);
 }

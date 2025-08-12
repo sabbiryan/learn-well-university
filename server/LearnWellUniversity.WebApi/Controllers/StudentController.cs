@@ -1,6 +1,8 @@
-﻿namespace LearnWellUniversity.WebApi.Controllers
+﻿using LearnWellUniversity.WebApi.Controllers.Bases;
+
+namespace LearnWellUniversity.WebApi.Controllers
 {
-    public class StudentController: ApiControllerBaseV1
+    public class StudentController: ApiControllerV1
     {
         
     }

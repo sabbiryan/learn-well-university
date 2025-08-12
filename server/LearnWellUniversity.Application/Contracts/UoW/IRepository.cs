@@ -7,13 +7,13 @@ namespace LearnWellUniversity.Application.Contracts.UoW
     {
         IQueryable<T> Query();
         
-        Task<T?> GetByIdAsync(int id);
+        Task<T?> GetByIdAsync<TPk>(TPk id);
         
         Task<IEnumerable<T>> GetAllAsync();
 
         Task<PaginatedResult<TResult>> GetPagedAsync<TResult>(
-            DynamicQuery queryParams,
-            Expression<Func<T, TResult>> selector,
+            DynamicQueryRequest queryParams,
+            Expression<Func<T, TResult>>? selector,
             List<Expression<Func<T, object>>>? includes = null);
 
         Task<PaginatedResult<TResult>> GetPagedAsync<TResult>(
@@ -27,5 +27,12 @@ namespace LearnWellUniversity.Application.Contracts.UoW
         Task AddAsync(T entity);
         void Update(T entity);        
         void Remove(T entity);
+
+
+        // Bulk operations
+        Task BulkInsertAsync(IEnumerable<T> entities, CancellationToken cancellationToken = default);
+        Task BulkUpdateAsync(IEnumerable<T> entities, CancellationToken cancellationToken = default);
+        Task BulkInsertOrUpdateAsync(IEnumerable<T> entities, CancellationToken cancellationToken = default);
+        Task BulkDeleteAsync(IEnumerable<T> entities, CancellationToken cancellationToken = default);
     }
 }

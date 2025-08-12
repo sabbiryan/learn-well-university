@@ -1,9 +1,10 @@
 ﻿using LearnWellUniversity.Application.Contracts.UoW;
+using MapsterMapper;
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace LearnWellUniversity.Infrastructure.Persistences.UoW
 {
-    public class UnitOfWork(AppDbContext context) : IUnitOfWork
+    public class UnitOfWork(AppDbContext context, IMapper mapper) : IUnitOfWork
     {
         private readonly Dictionary<string, object> _repositories = [];
         private IDbContextTransaction? _transaction;
@@ -13,7 +14,7 @@ namespace LearnWellUniversity.Infrastructure.Persistences.UoW
             var type = typeof(T).Name;
             if (!_repositories.ContainsKey(type))
             {
-                var repo = new Repository<T>(context);
+                var repo = new Repository<T>(context, mapper);
                 _repositories[type] = repo;
             }
             return (IRepository<T>)_repositories[type];

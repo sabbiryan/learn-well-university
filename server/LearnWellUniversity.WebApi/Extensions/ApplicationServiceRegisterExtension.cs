@@ -1,4 +1,4 @@
-﻿using LearnWellUniversity.Application.Contracts;
+﻿using LearnWellUniversity.Application.Contracts.Bases;
 using LearnWellUniversity.Application.Services;
 
 namespace LearnWellUniversity.WebApi.Extensions
@@ -8,10 +8,10 @@ namespace LearnWellUniversity.WebApi.Extensions
 
         public static IServiceCollection RegisterApplicationServices(this IServiceCollection services)
         {
-            var servicesNamespace = typeof(ApplicationServiceBase).Namespace!;
+            var servicesNamespace = typeof(ApplicationService).Namespace!;
 
             services.Scan(services =>
-                services.FromAssemblyOf<IApplicationServiceBase>()
+                services.FromAssemblyOf<IApplicationService>()
                     .AddClasses(classes => classes.InNamespaces(servicesNamespace))
                     .AsImplementedInterfaces()
                     .WithScopedLifetime()

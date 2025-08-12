@@ -15,10 +15,14 @@ namespace LearnWellUniversity.Infrastructure.Extensions
 
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
         {
+            services.AddScoped<AuditSaveChangesInterceptor>();
 
             services.AddDbContext<AppDbContext>((serviceProvider, options) =>
                 {
-                    
+
+                    var interceptor = serviceProvider.GetRequiredService<AuditSaveChangesInterceptor>();
+                    options.AddInterceptors(interceptor);
+
                     options.UseNpgsql(AppSettingValues.DefaultConnectionString, npgsqlOptions =>
                     {
                         npgsqlOptions.EnableRetryOnFailure(5);
@@ -26,16 +30,14 @@ namespace LearnWellUniversity.Infrastructure.Extensions
                     })
                     .UseSnakeCaseNamingConvention();
 
-                    var interceptor = serviceProvider.GetRequiredService<AuditSaveChangesInterceptor>();
-                    options.AddInterceptors(interceptor);
                 }
             );
 
             services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
             services.AddScoped<IUserContext, UserContext>();
 
-            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 

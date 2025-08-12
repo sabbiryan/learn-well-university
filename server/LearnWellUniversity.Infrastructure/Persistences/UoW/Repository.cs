@@ -1,12 +1,15 @@
 ﻿using LearnWellUniversity.Application.Common.Paginations;
 using LearnWellUniversity.Application.Contracts.UoW;
 using LearnWellUniversity.Infrastructure.Extensions;
+using Mapster;
+using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using EFCore.BulkExtensions;
 
 namespace LearnWellUniversity.Infrastructure.Persistences.UoW
 {
-    public class Repository<T>(AppDbContext context) : IRepository<T> where T : class
+    public class Repository<T>(AppDbContext context, IMapper mapper) : IRepository<T> where T : class
     {
 
         private readonly DbSet<T> _dbSet = context.Set<T>();
@@ -15,14 +18,14 @@ namespace LearnWellUniversity.Infrastructure.Persistences.UoW
 
         public IQueryable<T> Query() => _dbSet.AsQueryable();
 
-        public virtual async Task<T?> GetByIdAsync(int id) => await _dbSet.FindAsync(id);
+        public virtual async Task<T?> GetByIdAsync<TPk>(TPk id) => await _dbSet.FindAsync(id);
 
         public virtual async Task<IEnumerable<T>> GetAllAsync() => await _dbSet.AsNoTracking().ToListAsync();
 
 
         public virtual async Task<PaginatedResult<TResult>> GetPagedAsync<TResult>(
-            DynamicQuery queryParams,
-            Expression<Func<T, TResult>> selector,
+            DynamicQueryRequest queryParams,
+            Expression<Func<T, TResult>>? selector,
             List<Expression<Func<T, object>>>? includes = null)
         {
             IQueryable<T> query = _dbSet.AsNoTracking();
@@ -31,23 +34,32 @@ namespace LearnWellUniversity.Infrastructure.Persistences.UoW
             {
                 query = includes.Aggregate(query, (current, include) => current.Include(include));
             }
-            
-            
+
+
             query = query.ApplyDynamicFilter(queryParams.Filter);
 
             query = query.ApplyDynamicSearch(queryParams.Search);
 
             query = query.ApplyDynamicSort(queryParams.SortBy, queryParams.Direction);
 
-            
+
             var totalCount = await query.CountAsync();
 
-            
+
             query = query.Skip((queryParams.PageNumber - 1) * queryParams.PageSize)
                          .Take(queryParams.PageSize);
 
+            List<TResult> items = new List<TResult>();
 
-            var items = await query.Select(selector).ToListAsync();
+            if (selector != null)
+            {
+                items = await query.Select(selector).ToListAsync();
+            }
+            else
+            {
+                items = await query.ProjectToType<TResult>().ToListAsync();
+            }
+
 
             return new PaginatedResult<TResult>(items, totalCount, queryParams.PageNumber, queryParams.PageSize);
         }
@@ -86,10 +98,10 @@ namespace LearnWellUniversity.Infrastructure.Persistences.UoW
                 query = query.OrderBy(e => true);
             }
 
-            
+
             var totalCount = await query.CountAsync();
 
-            
+
             query = query
                 .Skip((options.PageNumber - 1) * options.PageSize)
                 .Take(options.PageSize);
@@ -139,6 +151,30 @@ namespace LearnWellUniversity.Infrastructure.Persistences.UoW
 
         public virtual void Remove(T entity) => _dbSet.Remove(entity);
 
-       
+
+
+        //Bulk operations
+
+
+        public async Task BulkInsertAsync(IEnumerable<T> entities, CancellationToken cancellationToken = default)
+        {
+            await context.BulkInsertAsync(entities.ToList(), cancellationToken: cancellationToken);
+        }
+
+        public async Task BulkUpdateAsync(IEnumerable<T> entities, CancellationToken cancellationToken = default)
+        {
+            await context.BulkUpdateAsync(entities.ToList(), cancellationToken: cancellationToken);
+        }
+
+        public async Task BulkInsertOrUpdateAsync(IEnumerable<T> entities, CancellationToken cancellationToken = default)
+        {
+            await context.BulkInsertOrUpdateAsync(entities.ToList(), cancellationToken: cancellationToken);
+        }
+
+        public async Task BulkDeleteAsync(IEnumerable<T> entities, CancellationToken cancellationToken = default)
+        {
+            await context.BulkDeleteAsync(entities.ToList(), cancellationToken: cancellationToken);
+        }
+
     }
 }

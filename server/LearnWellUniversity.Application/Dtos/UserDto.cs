@@ -12,7 +12,5 @@ namespace LearnWellUniversity.Application.Dtos
         public bool IsActive { get; set; }
         public bool IsEmailConfirmed { get; set; }
 
-
-
     }
 }

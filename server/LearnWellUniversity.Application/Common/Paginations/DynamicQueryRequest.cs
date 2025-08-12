@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LearnWellUniversity.Application.Common.Paginations
 {
-    public record DynamicQuery
+    public record DynamicQueryRequest
     {
         /// <summary>
         /// Search on all available columns except datetime, including one one nested level navigation 

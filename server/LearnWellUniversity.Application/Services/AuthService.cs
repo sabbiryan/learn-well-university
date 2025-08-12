@@ -3,6 +3,7 @@ using LearnWellUniversity.Application.Contracts.UoW;
 using LearnWellUniversity.Application.Dtos.Auths;
 using LearnWellUniversity.Application.Encryptions;
 using LearnWellUniversity.Domain.Entities.Auths;
+using Mapster;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -12,11 +13,13 @@ using System.Threading.Tasks;
 
 namespace LearnWellUniversity.Application.Services
 {
-    public class AuthService(IUnitOfWork unitOfWork, 
+    public class AuthService(
+        IUnitOfWork unitOfWork, 
         IJwtTokenGenerator jwtTokenGenerator,
-        ILogger<AuthService> logger) : ApplicationServiceBase, IAuthService
+        ILogger<AuthService> logger
+    ) : ApplicationService, IAuthService
     {
-        public async Task<AuthResponse> RegisterAsync(RegisterRequest request)
+        public async Task<SignupResponse> RegisterAsync(SignupRequest request)
         {
             var existingUser = await unitOfWork.Repository<User>().FindAsync(x=> x.Email.Equals(request.Email));
 
@@ -42,15 +45,8 @@ namespace LearnWellUniversity.Application.Services
 
                 await unitOfWork.Repository<User>().AddAsync(user);
                 await unitOfWork.SaveChangesAsync();
-
                 
-                await unitOfWork.Repository<UserRole>().AddAsync(new UserRole
-                {
-                    UserId = user.Id,
-                    RoleId = request.RoleId
-                });
-                await unitOfWork.SaveChangesAsync();
-
+                await AssingUserToRoles(user.Id, request.RoleIds);
 
                 await unitOfWork.CommitTransactionAsync();                
             }
@@ -62,11 +58,11 @@ namespace LearnWellUniversity.Application.Services
                 throw;
             }
             
-            return new AuthResponse("", user.Email);
+            return new SignupResponse(user.Id, user.Email);
         }
 
-
-        public async Task<AuthResponse> LoginAsync(LoginRequest request)
+      
+        public async Task<TokenResponse> LoginAsync(TokenRequest request)
         {
             var user = await unitOfWork.Repository<User>().FindAsync(x=> x.Email.Equals(request.Email));
 
@@ -80,7 +76,37 @@ namespace LearnWellUniversity.Application.Services
 
             var token = jwtTokenGenerator.GenerateToken(user, userRoles.Select(x=> x.Role));
 
-            return new AuthResponse(token, user.Email);
+            return new TokenResponse(token, user.Email);
+        }
+
+
+        public async Task AssingUserToRoles(int userId, int[] RoleIds)
+        {
+            List<UserRole> userRoles = [];
+
+            foreach (var roleId in RoleIds)
+            {
+                userRoles.Add(new UserRole
+                {
+                    UserId = userId,
+                    RoleId = roleId
+                });
+            }
+
+            await unitOfWork.Repository<UserRole>().BulkInsertOrUpdateAsync(userRoles);
+
+            await unitOfWork.SaveChangesAsync();
+
+        }
+
+        public async Task RemoveUserFromRoles(int id)
+        {
+            var userRoles = await unitOfWork.Repository<UserRole>().FilterAsync(x => x.UserId == id);
+
+            if (userRoles == null || !userRoles.Any()) 
+                return;
+
+            await unitOfWork.Repository<UserRole>().BulkDeleteAsync(userRoles);
         }
     }
 }

@@ -4,5 +4,5 @@
     {
         public T Id { get; init; } = default!;
     }
-    
+
 }

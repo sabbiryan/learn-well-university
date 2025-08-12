@@ -1,11 +1,12 @@
 using LearnWellUniversity.Application.Common;
 using LearnWellUniversity.Application.Contracts;
 using LearnWellUniversity.Domain.Entities;
+using LearnWellUniversity.WebApi.Controllers.Bases;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LearnWellUniversity.WebApi.Controllers
 {
-    public class WeatherForecastController(ILogger<WeatherForecastController> logger, IWeaterForecastService weaterForecastService) : ApiControllerBaseV1
+    public class WeatherForecastController(ILogger<WeatherForecastController> logger, IWeaterForecastService weaterForecastService) : ApiControllerV1
     {
       
         [HttpGet]

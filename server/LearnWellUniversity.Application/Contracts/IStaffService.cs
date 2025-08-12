@@ -1,26 +1,12 @@
-﻿using LearnWellUniversity.Application.Common.Paginations;
+﻿using LearnWellUniversity.Application.Contracts.Bases;
 using LearnWellUniversity.Application.Dtos;
+using LearnWellUniversity.Application.Requestes;
 using LearnWellUniversity.Domain.Entities;
-using LearnWellUniversity.Domain.Entities.Auths;
 
 namespace LearnWellUniversity.Application.Contracts
 {
-    public interface IStaffService : IApplicationServiceBase
+    public interface IStaffService : IApplicationCrudService<StaffDto, int, StaffCreateRequest, StaffUpdateRequest>
     {
-        Task<PaginatedResult<StaffDto>> GetAllStaffAsync(DynamicQuery request);
-        Task<StaffDto?> GetStaffByIdAsync(int id);
-        Task<Staff> AddStaffAsync(Staff staff);
-        Task UpdateStaffAsync(Staff staff);
-        Task DeleteStaffAsync(int id);
-    }
-
-
-    public interface IUserService: IApplicationServiceBase
-    {
-        Task<PaginatedResult<UserDto>> GetAllAsync(DynamicQuery request);
-        Task<UserDto?> GetUserByIdAsync(int id);
-        Task AddUserAsync(User user);
-        Task UpdateUserAsync(User user);
-        Task DeleteUserAsync(int id);
+        
     }
 }

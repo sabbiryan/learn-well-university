@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace LearnWellUniversity.Application.Services
 {
-    public class WeatherForecastService : ApplicationServiceBase, IWeaterForecastService
+    public class WeatherForecastService : ApplicationService, IWeaterForecastService
     {
 
         private static readonly string[] Summaries =

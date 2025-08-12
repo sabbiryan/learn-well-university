@@ -1,15 +1,14 @@
-﻿using LearnWellUniversity.Application.Dtos.Auths;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using LearnWellUniversity.Application.Contracts.Bases;
+using LearnWellUniversity.Application.Dtos.Auths;
 
 namespace LearnWellUniversity.Application.Contracts.Auths
 {
-    public interface IAuthService: IApplicationServiceBase
+    public interface IAuthService: IApplicationService
     {
-        Task<AuthResponse> RegisterAsync(RegisterRequest request);
-        Task<AuthResponse> LoginAsync(LoginRequest request);
+        Task<SignupResponse> RegisterAsync(SignupRequest request);
+        Task<TokenResponse> LoginAsync(TokenRequest request);
+
+        Task AssingUserToRoles(int userId, int[] RoleIds);
+        Task RemoveUserFromRoles(int id);
     }
 }
