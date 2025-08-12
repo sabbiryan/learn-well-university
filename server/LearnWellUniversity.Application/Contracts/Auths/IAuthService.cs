@@ -1,5 +1,6 @@
 ﻿using LearnWellUniversity.Application.Contracts.Bases;
-using LearnWellUniversity.Application.Dtos.Auths;
+using LearnWellUniversity.Application.Models.Dtos.Auths;
+using LearnWellUniversity.Application.Models.Requestes.Auths;
 
 namespace LearnWellUniversity.Application.Contracts.Auths
 {

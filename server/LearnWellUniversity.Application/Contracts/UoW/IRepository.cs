@@ -1,4 +1,4 @@
-﻿using LearnWellUniversity.Application.Common.Paginations;
+﻿using LearnWellUniversity.Application.Models.Common.Paginations;
 using System.Linq.Expressions;
 
 namespace LearnWellUniversity.Application.Contracts.UoW

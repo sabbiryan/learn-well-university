@@ -1,9 +1,9 @@
-﻿using LearnWellUniversity.Application.Common.Paginations;
-using LearnWellUniversity.Application.Contracts.Bases;
+﻿using LearnWellUniversity.Application.Contracts.Bases;
 using LearnWellUniversity.Application.Contracts.UoW;
-using LearnWellUniversity.Application.Dtos.Bases;
 using LearnWellUniversity.Application.Exceptions;
-using LearnWellUniversity.Application.Requestes.Bases;
+using LearnWellUniversity.Application.Models.Common.Paginations;
+using LearnWellUniversity.Application.Models.Dtos.Bases;
+using LearnWellUniversity.Application.Models.Requestes.Bases;
 using LearnWellUniversity.Domain.Entities.Bases;
 using MapsterMapper;
 using System.Linq.Expressions;

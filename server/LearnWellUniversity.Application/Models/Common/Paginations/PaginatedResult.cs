@@ -1,4 +1,4 @@
-﻿namespace LearnWellUniversity.Application.Common.Paginations
+﻿namespace LearnWellUniversity.Application.Models.Common.Paginations
 {
     public record PaginatedResult<T>
     {

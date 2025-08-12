@@ -8,12 +8,11 @@ using System.Linq.Expressions;
 
 namespace LearnWellUniversity.Application.Services
 {
-    public class StaffService : ApplicationCrudService<Staff, StaffDto, int, StaffCreateRequest, StaffUpdateRequest>, IStaffService
+    public class StudentService : ApplicationCrudService<Student, StudentDto, int, StudentCreateRequest, StudentUpdateRequest>, IStudentService
     {
+        readonly List<Expression<Func<Student, object>>> includes = [s => s.Department, s => s.PresentAddress!, s => s.PermanentAddress!];
 
-        readonly List<Expression<Func<Staff, object>>> includes = [s => s.Department, s => s.PresentAddress!, s => s.PermanentAddress!];
-
-        readonly Expression<Func<Staff, StaffDto>> selector = x => new StaffDto()
+        readonly Expression<Func<Student, StudentDto>> selector = x => new StudentDto()
         {
             Id = x.Id,
             FirstName = x.FirstName,
@@ -27,7 +26,8 @@ namespace LearnWellUniversity.Application.Services
             PermanentAddress = x.PermanentAddress != null ? new AddressDto(x.PermanentAddress.Street, x.PermanentAddress.City, x.PermanentAddress.State, x.PermanentAddress.ZipCode, x.PermanentAddress.Country) : null
         };
 
-        public StaffService(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
+
+        public StudentService(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
         {
             Selector = selector;
             Includes = includes;

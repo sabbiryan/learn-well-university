@@ -1,4 +1,4 @@
-﻿using LearnWellUniversity.Application.Dtos;
+﻿using LearnWellUniversity.Application.Models.Dtos;
 using LearnWellUniversity.Domain.Entities;
 using LearnWellUniversity.Domain.Entities.Auths;
 using Mapster;

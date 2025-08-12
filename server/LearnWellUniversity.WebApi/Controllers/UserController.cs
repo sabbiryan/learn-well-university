@@ -1,8 +1,8 @@
-﻿using LearnWellUniversity.Application.Common;
-using LearnWellUniversity.Application.Common.Paginations;
-using LearnWellUniversity.Application.Contracts;
-using LearnWellUniversity.Application.Dtos;
-using LearnWellUniversity.Application.Requestes;
+﻿using LearnWellUniversity.Application.Contracts;
+using LearnWellUniversity.Application.Models.Common;
+using LearnWellUniversity.Application.Models.Common.Paginations;
+using LearnWellUniversity.Application.Models.Dtos;
+using LearnWellUniversity.Application.Models.Requestes;
 using LearnWellUniversity.Application.Services;
 using LearnWellUniversity.WebApi.Controllers.Bases;
 using Microsoft.AspNetCore.Http;

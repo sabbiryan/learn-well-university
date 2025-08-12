@@ -1,9 +1,7 @@
-﻿using LearnWellUniversity.Application.Common;
-using LearnWellUniversity.Application.Common.Paginations;
-using LearnWellUniversity.Application.Contracts.Bases;
-using LearnWellUniversity.Application.Dtos;
-using LearnWellUniversity.Application.Requestes;
-using LearnWellUniversity.Domain.Entities.Auths;
+﻿using LearnWellUniversity.Application.Contracts.Bases;
+using LearnWellUniversity.Application.Models.Common.Paginations;
+using LearnWellUniversity.Application.Models.Dtos;
+using LearnWellUniversity.Application.Models.Requestes;
 
 namespace LearnWellUniversity.Application.Contracts
 {

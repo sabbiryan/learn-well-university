@@ -1,6 +1,6 @@
-﻿using LearnWellUniversity.Application.Dtos.Bases;
+﻿using LearnWellUniversity.Application.Models.Dtos.Bases;
 
-namespace LearnWellUniversity.Application.Dtos
+namespace LearnWellUniversity.Application.Models.Dtos
 {
     public record UserDto : DtoBase<int>
     {

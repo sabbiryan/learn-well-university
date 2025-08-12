@@ -1,4 +1,4 @@
-﻿using LearnWellUniversity.Application.Common;
+﻿using LearnWellUniversity.Application.Models.Common;
 using Serilog;
 using System.Net;
 using System.Text.Json;

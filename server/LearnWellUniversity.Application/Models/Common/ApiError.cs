@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LearnWellUniversity.Application.Common
+namespace LearnWellUniversity.Application.Models.Common
 {
     public class ApiError
     {

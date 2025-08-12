@@ -1,4 +1,4 @@
-﻿namespace LearnWellUniversity.Application.Dtos
+﻿namespace LearnWellUniversity.Application.Models.Dtos
 {
     public record LookupDto
     {

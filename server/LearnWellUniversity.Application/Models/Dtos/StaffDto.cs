@@ -1,14 +1,9 @@
-﻿using LearnWellUniversity.Application.Dtos.Bases;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using LearnWellUniversity.Application.Models.Dtos.Bases;
 
-namespace LearnWellUniversity.Application.Dtos
+namespace LearnWellUniversity.Application.Models.Dtos
 {
 
-    public record StaffDto: DtoBase<int>
+    public record StaffDto : DtoBase<int>
     {
         public string FirstName { get; set; } = default!;
         public string LastName { get; set; } = default!;
@@ -17,7 +12,7 @@ namespace LearnWellUniversity.Application.Dtos
 
         public string Code { get; init; } = null!;
         public string? Position { get; init; }
-        
+
         public DateTime? DateOfBirth { get; init; }
 
 

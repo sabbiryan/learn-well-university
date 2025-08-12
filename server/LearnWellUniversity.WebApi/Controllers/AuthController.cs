@@ -1,6 +1,7 @@
-﻿using LearnWellUniversity.Application.Common;
-using LearnWellUniversity.Application.Contracts.Auths;
-using LearnWellUniversity.Application.Dtos.Auths;
+﻿using LearnWellUniversity.Application.Contracts.Auths;
+using LearnWellUniversity.Application.Models.Common;
+using LearnWellUniversity.Application.Models.Dtos.Auths;
+using LearnWellUniversity.Application.Models.Requestes.Auths;
 using LearnWellUniversity.Application.Services;
 using LearnWellUniversity.WebApi.Controllers.Bases;
 using Microsoft.AspNetCore.Authorization;

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 
 namespace LearnWellUniversity.Infrastructure.Persistences.UoW
 {
-    public class UnitOfWork(AppDbContext context, IMapper mapper) : IUnitOfWork
+    public class UnitOfWork(AppDbContext context) : IUnitOfWork, IDisposable
     {
         private readonly Dictionary<string, object> _repositories = [];
         private IDbContextTransaction? _transaction;
@@ -12,12 +12,13 @@ namespace LearnWellUniversity.Infrastructure.Persistences.UoW
         public IRepository<T> Repository<T>() where T : class
         {
             var type = typeof(T).Name;
-            if (!_repositories.ContainsKey(type))
+            if (!_repositories.TryGetValue(type, out object? value))
             {
-                var repo = new Repository<T>(context, mapper);
-                _repositories[type] = repo;
+                var repo = new Repository<T>(context);
+                value = repo;
+                _repositories[type] = value;
             }
-            return (IRepository<T>)_repositories[type];
+            return (IRepository<T>)value;
         }
 
         public async Task<int> SaveChangesAsync() => await context.SaveChangesAsync();
@@ -47,10 +48,22 @@ namespace LearnWellUniversity.Infrastructure.Persistences.UoW
             }
         }
 
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (_transaction != null)
+                {
+                    _transaction.Dispose();
+                    _transaction = null;
+                }
+            }
+        }
+
         public void Dispose()
         {
-            _transaction?.Dispose();
-            context.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this); 
         }
     }
 }

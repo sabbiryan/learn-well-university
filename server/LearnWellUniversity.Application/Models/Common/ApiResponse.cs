@@ -1,4 +1,4 @@
-﻿namespace LearnWellUniversity.Application.Common
+﻿namespace LearnWellUniversity.Application.Models.Common
 {
     public class ApiResponse<T>
     {

@@ -1,15 +1,15 @@
-﻿using LearnWellUniversity.Application.Common.Paginations;
-using LearnWellUniversity.Application.Contracts.UoW;
+﻿using LearnWellUniversity.Application.Contracts.UoW;
 using LearnWellUniversity.Infrastructure.Extensions;
 using Mapster;
 using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using EFCore.BulkExtensions;
+using LearnWellUniversity.Application.Models.Common.Paginations;
 
 namespace LearnWellUniversity.Infrastructure.Persistences.UoW
 {
-    public class Repository<T>(AppDbContext context, IMapper mapper) : IRepository<T> where T : class
+    public class Repository<T>(AppDbContext context) : IRepository<T> where T : class
     {
 
         private readonly DbSet<T> _dbSet = context.Set<T>();
@@ -49,7 +49,7 @@ namespace LearnWellUniversity.Infrastructure.Persistences.UoW
             query = query.Skip((queryParams.PageNumber - 1) * queryParams.PageSize)
                          .Take(queryParams.PageSize);
 
-            List<TResult> items = new List<TResult>();
+            List<TResult> items = [];
 
             if (selector != null)
             {

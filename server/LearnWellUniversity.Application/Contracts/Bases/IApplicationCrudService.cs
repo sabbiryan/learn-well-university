@@ -1,6 +1,6 @@
-﻿using LearnWellUniversity.Application.Common.Paginations;
-using LearnWellUniversity.Application.Dtos.Bases;
-using LearnWellUniversity.Application.Requestes.Bases;
+﻿using LearnWellUniversity.Application.Models.Common.Paginations;
+using LearnWellUniversity.Application.Models.Dtos.Bases;
+using LearnWellUniversity.Application.Models.Requestes.Bases;
 using LearnWellUniversity.Domain.Entities.Bases;
 
 namespace LearnWellUniversity.Application.Contracts.Bases

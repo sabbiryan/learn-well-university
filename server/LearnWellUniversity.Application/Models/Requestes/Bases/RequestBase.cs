@@ -1,4 +1,4 @@
-﻿namespace LearnWellUniversity.Application.Requestes.Bases
+﻿namespace LearnWellUniversity.Application.Models.Requestes.Bases
 {
     public abstract record RequestBase<T>
     {

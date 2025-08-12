@@ -1,7 +1,8 @@
 ﻿using LearnWellUniversity.Application.Contracts.Auths;
 using LearnWellUniversity.Application.Contracts.UoW;
-using LearnWellUniversity.Application.Dtos.Auths;
 using LearnWellUniversity.Application.Encryptions;
+using LearnWellUniversity.Application.Models.Dtos.Auths;
+using LearnWellUniversity.Application.Models.Requestes.Auths;
 using LearnWellUniversity.Domain.Entities.Auths;
 using Mapster;
 using Microsoft.Extensions.Logging;

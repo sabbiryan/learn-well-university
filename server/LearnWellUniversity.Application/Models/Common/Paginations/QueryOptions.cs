@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace LearnWellUniversity.Application.Common.Paginations
+namespace LearnWellUniversity.Application.Models.Common.Paginations
 {
     public record QueryOptions<T>
     {

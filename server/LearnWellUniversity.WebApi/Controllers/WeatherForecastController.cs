@@ -1,5 +1,5 @@
-using LearnWellUniversity.Application.Common;
 using LearnWellUniversity.Application.Contracts;
+using LearnWellUniversity.Application.Models.Common;
 using LearnWellUniversity.Domain.Entities;
 using LearnWellUniversity.WebApi.Controllers.Bases;
 using Microsoft.AspNetCore.Mvc;
