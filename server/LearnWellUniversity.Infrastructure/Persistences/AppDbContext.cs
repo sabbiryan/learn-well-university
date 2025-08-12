@@ -45,6 +45,8 @@ namespace LearnWellUniversity.Infrastructure.Persistences
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
+
             modelBuilder.AddSecurityEntitiesConfigurations();
             modelBuilder.AddBusinessEntitiesConfigurations();
         }

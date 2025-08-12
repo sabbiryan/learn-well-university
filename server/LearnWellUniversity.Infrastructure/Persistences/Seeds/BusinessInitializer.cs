@@ -43,6 +43,27 @@ namespace LearnWellUniversity.Infrastructure.Persistences.Seeds
 
                 logger.LogInformation("Schedules seeded successfully.");
             }
+
+
+            if (!context.Gradings.Any())
+            {
+                foreach (var grading in StaticGrading.AllGradings)
+                {
+                    context.Gradings.Add(new Grading
+                    {
+                        Name = grading.Name,
+                        Description = grading.Description,
+                        MinScore = grading.MinScore,
+                        MaxScore = grading.MaxScore,
+                        GradePoint = grading.GradePoint,
+                        IsActive = true
+                    });
+                }
+
+                context.SaveChanges();
+
+                logger.LogInformation("Gradings seeded successfully.");
+            }
         }
     }
 }

@@ -7,14 +7,9 @@ using System.Threading.Tasks;
 
 namespace LearnWellUniversity.Application.Models.Requestes
 {
-    public record UserUpdateRequest(
-        string FirstName, 
-        string LastName, 
-        string? Phone, 
-        bool IsActive, 
-        int[] RoleIds
-    ) : UpdateRequestBase<int>;    
-
-
-   
+    public record ClassCreateRequest(
+        string Name,
+        string Code,
+        string? Description
+    ): CreateRequestBase;
 }

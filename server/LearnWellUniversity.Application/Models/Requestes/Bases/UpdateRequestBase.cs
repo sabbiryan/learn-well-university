@@ -1,6 +1,8 @@
 ﻿namespace LearnWellUniversity.Application.Models.Requestes.Bases
 {
-    public abstract record RequestBase<T>
+
+
+    public abstract record UpdateRequestBase<T>
     {
         public T Id { get; init; } = default!;
     }

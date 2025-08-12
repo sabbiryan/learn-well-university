@@ -16,8 +16,8 @@ namespace LearnWellUniversity.Application.Services
     ) : ApplicationService, IApplicationCrudService<TDto, TPk, TCRequest, TURequest>
         where TEntity : EntityBase<TPk>
         where TDto : DtoBase<TPk>
-        where TCRequest : class
-        where TURequest : RequestBase<TPk>
+        where TCRequest : CreateRequestBase
+        where TURequest : UpdateRequestBase<TPk>
     {
 
         /// <summary>

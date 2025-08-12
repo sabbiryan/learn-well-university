@@ -7,8 +7,8 @@ namespace LearnWellUniversity.Application.Contracts.Bases
 {
     public interface IApplicationCrudService< TDto, TPk, TCRequest, TURequest> : IApplicationService
         where TDto : DtoBase<TPk>
-        where TCRequest : class
-        where TURequest : RequestBase<TPk>
+        where TCRequest : CreateRequestBase
+        where TURequest : UpdateRequestBase<TPk>
     {
         Task<PaginatedResult<TDto>> GetPagedAsync(DynamicQueryRequest request);
         Task<TDto?> GetByIdAsync(TPk id);

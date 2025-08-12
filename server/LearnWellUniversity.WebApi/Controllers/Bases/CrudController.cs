@@ -11,8 +11,8 @@ namespace LearnWellUniversity.WebApi.Controllers.Bases
     
     public abstract class CrudController<TDto, TPk, TCRequest, TURequest>(IApplicationCrudService<TDto, TPk, TCRequest, TURequest> service) : ApiControllerV1
         where TDto : DtoBase<TPk>
-        where TCRequest : class
-        where TURequest : RequestBase<TPk>
+        where TCRequest : CreateRequestBase
+        where TURequest : UpdateRequestBase<TPk>
     {
         [HttpGet]
         public async Task<ApiResponse<PaginatedResult<TDto>>> GetPagedAsync([FromQuery] DynamicQueryRequest request)

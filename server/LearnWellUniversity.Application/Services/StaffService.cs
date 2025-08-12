@@ -33,5 +33,4 @@ namespace LearnWellUniversity.Application.Services
             Includes = includes;
         }
     }
-
 }

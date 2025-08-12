@@ -60,37 +60,7 @@ namespace LearnWellUniversity.Infrastructure.Persistences.EntityConfigurations
                 e.Property(s => s.EndTime).HasConversion(timeOnlyConverter).IsRequired();
             });
 
-            modelBuilder.Entity<Staff>(e =>
-            {
-                e.HasKey(s => s.Id);
-                e.Property(s => s.Id).ValueGeneratedOnAdd();
-                e.HasIndex(s => s.Code).IsUnique();
-                e.Property(s => s.FirstName).HasMaxLength(100);
-                e.Property(s => s.LastName).HasMaxLength(100);
-                e.Property(s => s.FullName).HasComputedColumnSql("first_name || ' ' || last_name", stored: true);
-                e.Property(s => s.Email).IsRequired().HasMaxLength(100);
-
-                e.HasOne(e => e.PresentAddress)
-                    .WithMany()
-                    .HasForeignKey(s => s.PresentAddressId)
-                    .OnDelete(DeleteBehavior.Restrict);
-
-                e.HasOne(e => e.PermanentAddress)
-                    .WithMany()
-                    .HasForeignKey(s => s.PermanentAddressId)
-                    .OnDelete(DeleteBehavior.Restrict);
-
-                e.HasOne(s => s.Department)
-                    .WithMany(d => d.Staffs)
-                    .HasForeignKey(s => s.DepartmentId)
-                    .OnDelete(DeleteBehavior.Restrict);
-
-                e.HasOne(s => s.User)
-                    .WithMany(u => u.Staffs)
-                    .HasForeignKey(s => s.UserId)
-                    .IsRequired(false)
-                    .OnDelete(DeleteBehavior.Restrict);
-            });
+            
 
             modelBuilder.Entity<Class>(e =>
             {
@@ -139,39 +109,7 @@ namespace LearnWellUniversity.Infrastructure.Persistences.EntityConfigurations
             });
 
 
-            modelBuilder.Entity<Student>(e =>
-            {
-                e.HasKey(s => s.Id);
-                e.Property(s => s.Id).ValueGeneratedOnAdd();
-                e.HasIndex(s => s.Code).IsUnique();
-                e.Property(s => s.FirstName).HasMaxLength(100);
-                e.Property(s => s.LastName).HasMaxLength(100);
-                e.Property(s => s.FullName).HasComputedColumnSql("first_name || ' ' || last_name", stored: true);
-                e.Property(s => s.Code).IsRequired().HasMaxLength(20);
-                e.Property(s => s.AcademicLevel).IsRequired();
-
-                e.HasOne(e => e.PresentAddress)
-                    .WithMany()
-                    .HasForeignKey(s => s.PresentAddressId)
-                    .OnDelete(DeleteBehavior.Restrict);
-
-                e.HasOne(e => e.PermanentAddress)
-                    .WithMany()
-                    .HasForeignKey(s => s.PermanentAddressId)
-                    .OnDelete(DeleteBehavior.Restrict);
-
-                e.HasOne(s => s.Department)
-                    .WithMany(d => d.Students)
-                    .HasForeignKey(s => s.DepartmentId)
-                    .OnDelete(DeleteBehavior.Restrict);
-
-                e.HasOne(s => s.User)
-                    .WithMany(u => u.Students)
-                    .HasForeignKey(s => s.UserId)
-                    .IsRequired(false)
-                    .OnDelete(DeleteBehavior.Restrict);
-            });
-
+           
             modelBuilder.Entity<StudentCourse>(e =>
             {
                 e.HasKey(sc => new { sc.StudentId, sc.CourseId });

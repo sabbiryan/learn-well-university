@@ -4,6 +4,6 @@ using LearnWellUniversity.Application.Models.Requestes;
 
 namespace LearnWellUniversity.Application.Contracts
 {
-    public interface IStaffService : IApplicationCrudService<StaffDto, int, StaffCreateRequest, StaffUpdateRequest>;
+    public interface ICourseService: IApplicationCrudService<CourseDto, int, CourseCreateRequest, CourseUpdateRequest>;
 
 }

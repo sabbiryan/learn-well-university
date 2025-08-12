@@ -8,6 +8,7 @@ namespace LearnWellUniversity.Infrastructure.Persistences.Seeds.Models
 {
     public record StaticRole(string Name, string DisplayName, bool IsStatic = false)
     {
+        public static StaticRole Host { get;} = new StaticRole("Host", "Host", true);
         public static StaticRole Admin { get; } = new StaticRole("Admin", "Administrator", true);
         public static StaticRole Staff { get; } = new StaticRole("Staff", "Staff", true);
         public static StaticRole Teacher { get; } = new StaticRole("Teacher", "Teacher", true);
@@ -16,6 +17,7 @@ namespace LearnWellUniversity.Infrastructure.Persistences.Seeds.Models
 
         public static StaticRole[] AllRoles { get; } =
         [
+            Host,
             Admin,
             Staff,
             Teacher,
