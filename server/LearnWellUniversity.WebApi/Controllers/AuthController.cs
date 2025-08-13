@@ -15,7 +15,7 @@ namespace LearnWellUniversity.WebApi.Controllers
     public class AuthController(IAuthService userService) : ApiControllerV1
     {
         [HttpPost("Register")]
-        public async Task<ApiResponse<SignupResponse>> Register([FromBody] SignupRequest request)
+        public async Task<ApiResponse<SignupResponse>> RegisterAsync([FromBody] SignupRequest request)
         {
             try
             {
@@ -30,7 +30,7 @@ namespace LearnWellUniversity.WebApi.Controllers
         }
 
         [HttpPost("Login")]
-        public async Task<ApiResponse<TokenResponse>> Login([FromBody] TokenRequest request)
+        public async Task<ApiResponse<TokenResponse>> LoginAsync([FromBody] TokenRequest request)
         {
             try
             {

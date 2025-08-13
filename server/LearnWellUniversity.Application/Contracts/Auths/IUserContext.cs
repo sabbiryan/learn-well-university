@@ -9,6 +9,9 @@
         IEnumerable<string> Roles { get; }
         IEnumerable<string> RoleIds { get; }
 
+        string? StaffId { get; }
+        string? StudentId { get; }
+
         string? GetClaim(string claimType);
     }
 }

@@ -42,6 +42,13 @@ namespace LearnWellUniversity.Application.MappingConfigs
                 .Map(dest => dest.Day, src => src.Day.ToString())
                 .TwoWays();
 
+            config.NewConfig<ClassSchedule, ClassScheduleDto>()
+                .Map(dest => dest.ClassCode, src => src.Class == null ? null : src.Class.Code)
+                .Map(dest => dest.ClassName, src => src.Class == null ? null : src.Class.Name)
+                .Map(dest => dest.ScheduleDay, src => src.Schedule.Day.ToString())
+                .Map(dest => dest.ScheduleStartTime, src => src.Schedule.StartTime.ToString(@"hh\:mm"))
+                .Map(dest => dest.ScheduleEndTime, src => src.Schedule.EndTime.ToString(@"hh\:mm"))
+                .TwoWays();
 
 
             config.NewConfig<Staff, StaffDto>()
@@ -91,6 +98,29 @@ namespace LearnWellUniversity.Application.MappingConfigs
             config.NewConfig<Student, StudentCreateRequest>().TwoWays();
             config.NewConfig<StudentUpdateRequest, Student>().TwoWays();
 
+
+            config.NewConfig<CourseClass, CourseClassDto>()
+                .Map(dest => dest.ClassCode, src => src.Class == null ? null : src.Class.Code)
+                .Map(dest => dest.ClassName, src => src.Class == null ? null : src.Class.Name)
+                .Map(dest => dest.CourseCode, src => src.Course == null ? null : src.Course.Code)
+                .Map(dest => dest.CourseName, src => src.Course == null ? null : src.Course.Name)
+                .TwoWays();
+            config.NewConfig<CourseClass, CourseClassRequest>().TwoWays();
+
+            config.NewConfig<StudentClass, StudentClassDto>()
+                .Map(dest => dest.ClassName, src => src.Class == null ? null : src.Class.Name)
+                .Map(dest => dest.StudentName, src => src.Student == null ? null : src.Student.FullName)
+                .TwoWays();
+            config.NewConfig<StudentClass, StudentClassRequest>().TwoWays();
+
+            config.NewConfig<StudentCourse, StudentCourseDto>()
+                .Map(dest => dest.CourseCode, src => src.Course == null ? null : src.Course.Code)
+                .Map(dest => dest.CourseName, src => src.Course == null ? null : src.Course.Name)
+                .Map(dest => dest.StudentCode, src => src.Student == null ? null : src.Student.Code)
+                .Map(dest => dest.StudentName, src => src.Student == null ? null : src.Student.FullName)
+                .Map(dest => dest.GradingName, src => src.Grading == null ? null : src.Grading.Name)
+                .TwoWays();
+            config.NewConfig<StudentCourse, StudentCourseRequest>().TwoWays();
         }
     }
 }

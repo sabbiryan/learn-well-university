@@ -10,7 +10,7 @@ namespace LearnWellUniversity.Infrastructure.Auths
 {
     public class JwtTokenGenerator() : IJwtTokenGenerator
     {
-        public string GenerateToken(User user, IEnumerable<Role> roles)
+        public string GenerateToken(User user, int? staffId, int? studentId, IEnumerable<Role> roles)
         {
             var claims = new List<Claim>
             {
@@ -18,6 +18,7 @@ namespace LearnWellUniversity.Infrastructure.Auths
                 new(JwtRegisteredClaimNames.UniqueName, user.Email),
                 new(JwtRegisteredClaimNames.Email, user.Email),
                 new(JwtRegisteredClaimNames.Name, user.FullName ?? string.Empty),                
+                
             };
 
             foreach (var role in roles)
@@ -25,6 +26,16 @@ namespace LearnWellUniversity.Infrastructure.Auths
                 claims.Add(new Claim(ClaimTypes.Role, role.Name));
                 claims.Add(new Claim(ClaimConstants.RoleId, role.Id.ToString()));
             }
+
+            if(staffId.HasValue)
+            {
+                claims.Add(new Claim(ClaimConstants.StaffId, staffId.Value.ToString()));
+            }   
+            else if(studentId.HasValue)
+            {
+                claims.Add(new Claim(ClaimConstants.StudentId, studentId.Value.ToString()));
+            }
+
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(AppSettingValues.JwtKey));
 

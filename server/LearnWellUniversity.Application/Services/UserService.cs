@@ -23,14 +23,9 @@ namespace LearnWellUniversity.Application.Services
 
         public async Task<PaginatedResult<UserDto>> GetPagedAsync(DynamicQueryRequest request)
         {
-            Expression<Func<User, UserDto>> selector = x => new UserDto()
+            Expression<Func<User, UserDto>> selector = x => new UserDto(x.FirstName, x.LastName, x.Email, x.Phone, x.IsActive, x.IsEmailConfirmed)
             {
                 Id = x.Id,
-                FirstName = x.FirstName,
-                LastName = x.LastName,
-                Email = x.Email,
-                Phone = x.Phone,
-                IsActive = x.IsActive,
             };
 
 

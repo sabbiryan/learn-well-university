@@ -106,6 +106,11 @@ namespace LearnWellUniversity.Infrastructure.Persistences.EntityConfigurations
                 e.HasOne(cc => cc.Class)
                     .WithMany(c => c.CourseClasses)
                     .HasForeignKey(cc => cc.ClassId);
+
+                e.HasOne(cc => cc.EnrollmentStaff)
+                    .WithMany(s => s.CourseClasses)
+                    .HasForeignKey(cc => cc.EnrollmentStaffId)
+                    .OnDelete(DeleteBehavior.Restrict);
             });
 
 
@@ -127,6 +132,11 @@ namespace LearnWellUniversity.Infrastructure.Persistences.EntityConfigurations
                 e.HasOne(sc => sc.Course)
                     .WithMany(c => c.StudentCourses)
                     .HasForeignKey(sc => sc.CourseId);
+
+                e.HasOne(sc => sc.EnrollmentStaff)
+                    .WithMany(s => s.StudentCourses)
+                    .HasForeignKey(sc => sc.EnrollmentStaffId)
+                    .OnDelete(DeleteBehavior.Restrict);
             });
 
             modelBuilder.Entity<StudentClass>(e =>
@@ -140,6 +150,11 @@ namespace LearnWellUniversity.Infrastructure.Persistences.EntityConfigurations
                 e.HasOne(sc => sc.Class)
                     .WithMany(c => c.StudentClasses)
                     .HasForeignKey(sc => sc.ClassId);
+
+                e.HasOne(sc => sc.EnrollmentStaff)
+                    .WithMany(s => s.StudentClasses)
+                    .HasForeignKey(sc => sc.EnrollmentStaffId)
+                    .OnDelete(DeleteBehavior.Restrict);
             });
         }
     }

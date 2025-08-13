@@ -10,5 +10,13 @@ namespace LearnWellUniversity.Domain.Entities
         public int ClassId { get; set; }
         public virtual Class Class { get; set; } = default!;
 
+
+        public DateTime EnrollmentDate { get; set; } = DateTime.UtcNow;
+
+        public int? EnrollmentStaffId { get; set; }
+        public virtual Staff? EnrollmentStaff { get; set; }
     }
+
+   
+
 }

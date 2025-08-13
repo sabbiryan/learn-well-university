@@ -3,6 +3,7 @@ using LearnWellUniversity.Application.Contracts.UoW;
 using LearnWellUniversity.Application.Encryptions;
 using LearnWellUniversity.Application.Models.Dtos.Auths;
 using LearnWellUniversity.Application.Models.Requestes.Auths;
+using LearnWellUniversity.Domain.Entities;
 using LearnWellUniversity.Domain.Entities.Auths;
 using Mapster;
 using Microsoft.Extensions.Logging;
@@ -75,7 +76,16 @@ namespace LearnWellUniversity.Application.Services
             if(userRoles == null || !userRoles.Any())
                 throw new Exception("User has no roles assigned");
 
-            var token = jwtTokenGenerator.GenerateToken(user, userRoles.Select(x=> x.Role));
+            // Check if the user is a staff or student
+            int? studentId = null;
+            var staff = await unitOfWork.Repository<Staff>().FindAsync(s => s.UserId == user.Id);
+            if(staff == null)
+            {
+                var student = await unitOfWork.Repository<Student>().FindAsync(s => s.UserId == user.Id);
+                studentId = student?.Id;
+            }            
+
+            var token = jwtTokenGenerator.GenerateToken(user, staff?.Id, studentId, userRoles.Select(x=> x.Role));
 
             return new TokenResponse(token, user.Email);
         }

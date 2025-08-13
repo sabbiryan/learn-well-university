@@ -22,5 +22,10 @@ namespace LearnWellUniversity.Domain.Entities
 
         public int? UserId { get; set; }
         public virtual User? User { get; set; }
+
+
+        public virtual ICollection<StudentClass> StudentClasses { get; set; } = new HashSet<StudentClass>();
+        public virtual ICollection<StudentCourse> StudentCourses { get; set; } = new HashSet<StudentCourse>();
+        public virtual ICollection<CourseClass> CourseClasses { get; set; } = new HashSet<CourseClass>();
     }
 }

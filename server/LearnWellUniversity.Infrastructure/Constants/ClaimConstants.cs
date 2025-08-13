@@ -9,5 +9,9 @@ namespace LearnWellUniversity.Infrastructure.Constants
     public class ClaimConstants
     {
         public const string RoleId = "roleId";
+
+        public const string UserType = "UserType";        
+        public const string StudentId = "StudentId";
+        public const string StaffId = "StaffId";
     }
 }

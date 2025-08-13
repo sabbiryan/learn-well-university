@@ -1,4 +1,6 @@
-﻿namespace LearnWellUniversity.Application.Models.Common
+﻿using Microsoft.AspNetCore.Http;
+
+namespace LearnWellUniversity.Application.Models.Common
 {
     public class ApiResponse<T>
     {
@@ -9,7 +11,7 @@
 
         public ApiResponse() { }
 
-        public ApiResponse(T data, int statusCode = 200)
+        public ApiResponse(T data, int statusCode = StatusCodes.Status200OK)
         {
             Data = data;
             StatusCode = statusCode;

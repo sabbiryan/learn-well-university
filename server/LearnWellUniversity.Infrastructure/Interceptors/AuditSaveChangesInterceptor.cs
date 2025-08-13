@@ -5,11 +5,12 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace LearnWellUniversity.Infrastructure.Interceptors
 {
-    public class AuditSaveChangesInterceptor(IUserContext currentUserService) : SaveChangesInterceptor
+    public class AuditSaveChangesInterceptor(IUserContext userContext) : SaveChangesInterceptor
     {
         public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
         {
             ApplyAuditing(eventData.Context);
+
             return base.SavingChanges(eventData, result);
         }
 
@@ -26,11 +27,11 @@ namespace LearnWellUniversity.Infrastructure.Interceptors
                 if (entry.State == EntityState.Added)
                 {
                     entry.Entity.CreatedAt = DateTime.UtcNow;
-                    entry.Entity.Creator = currentUserService.UserId;
+                    entry.Entity.Creator = userContext.UserId;
                 }
 
                 entry.Entity.ModifiedAt = DateTime.UtcNow;
-                entry.Entity.Modifier = currentUserService.UserId;
+                entry.Entity.Modifier = userContext.UserId;
             }
         }
     }

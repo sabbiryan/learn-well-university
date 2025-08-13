@@ -2,15 +2,12 @@
 
 namespace LearnWellUniversity.Application.Models.Dtos
 {
-    public record UserDto : DtoBase<int>
-    {
-        public string FirstName { get; set; } = null!;
-        public string LastName { get; set; } = null!;
-        public string Email { get; set; } = null!;
-        public string? Phone { get; set; }
-
-        public bool IsActive { get; set; }
-        public bool IsEmailConfirmed { get; set; }
-
-    }
+    public record UserDto(
+        string FirstName, 
+        string LastName, 
+        string Email,
+        string? Phone, 
+        bool IsActive, 
+        bool IsEmailConfirmed
+    ) : DtoBase<int>;
 }
