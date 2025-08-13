@@ -15,7 +15,6 @@ namespace LearnWellUniversity.WebApi.Controllers
 {
     public class AuthController(IAuthService authService) : ApiControllerV1
     {
-        [AllowAnonymous]
         [HttpPost("Register")]
         public async Task<ApiResponse<SignupResponse>> RegisterAsync([FromBody] SignupRequest request)
         {
