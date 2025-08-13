@@ -13,6 +13,8 @@ builder.Services.AddApiDocumentations();
 
 builder.Services.AddHttpContextAccessor();
 
+builder.Services.AddForwardedHeaderConfig();
+
 builder.Services.AddInfrastructureServices();
 
 builder.Services.RegisterApplicationServices();
@@ -38,6 +40,8 @@ app.UseHttpsRedirection();
 app.UseGlobalExceptionHandler();
 
 app.UseApiDocumentation();
+
+app.UseForwardedHeaders();
 
 app.UseAuthentication();
 

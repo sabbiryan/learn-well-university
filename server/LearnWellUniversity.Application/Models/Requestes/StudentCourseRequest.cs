@@ -2,7 +2,9 @@
 {
     public record StudentCourseRequest(
         int StudentId,
-        int CourseId,
-        int ClassId
-    );
+        int CourseId
+    )
+    {
+        public int ClassId { get; set; }
+    }
 }

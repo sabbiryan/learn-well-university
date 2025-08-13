@@ -16,6 +16,7 @@ namespace LearnWellUniversity.Domain.Entities.Auths
         public virtual ICollection<UserRole> UserRoles { get; set; } = new HashSet<UserRole>();
         public virtual ICollection<Staff> Staffs { get; set; } = new HashSet<Staff>();
         public virtual ICollection<Student> Students { get; set; } = new HashSet<Student>();
+        public virtual ICollection<RefreshToken> RefreshTokens { get; set; } = new HashSet<RefreshToken>();
     }
 
 }

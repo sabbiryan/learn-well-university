@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LearnWellUniversity.Infrastructure.Persistences.Seeds.Models
+namespace LearnWellUniversity.Application.Models.Statics
 {
     public record StaticUser(string FirstName, string LastName, string Email, string? Phone, string password)
     {

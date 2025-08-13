@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LearnWellUniversity.Infrastructure.Persistences.Seeds.Models
+namespace LearnWellUniversity.Application.Models.Statics
 {
     public record StaticRole(string Name, string DisplayName, bool IsStatic = false)
     {

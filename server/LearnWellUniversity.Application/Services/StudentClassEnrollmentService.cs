@@ -1,4 +1,5 @@
 ﻿using LearnWellUniversity.Application.Contracts;
+using LearnWellUniversity.Application.Contracts.Auths;
 using LearnWellUniversity.Application.Contracts.UoW;
 using LearnWellUniversity.Application.Models.Dtos;
 using LearnWellUniversity.Application.Models.Requestes;
@@ -13,7 +14,8 @@ using System.Threading.Tasks;
 namespace LearnWellUniversity.Application.Services
 {
     public class StudentClassEnrollmentService(IUnitOfWork unitOfWork, 
-        IMapper mapper) : IStudentClassEntrollmentService
+        IMapper mapper,
+        IUserContext userContext) : IStudentClassEntrollmentService
     {
         public async Task<StudentClassDto> EnrollAsync(StudentClassRequest request)
         {
@@ -26,6 +28,7 @@ namespace LearnWellUniversity.Application.Services
             }
 
             studentClass = mapper.Map<StudentClass>(request);
+            studentClass.EnrollmentStaffId = userContext.GetTypedFromValue<int?>(userContext.StaffId);
 
             await unitOfWork.Repository<StudentClass>().AddAsync(studentClass);
 

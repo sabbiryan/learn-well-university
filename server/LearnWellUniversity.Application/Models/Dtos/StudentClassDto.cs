@@ -7,6 +7,6 @@
         string? ClassName,
         DateTime? EnrollmentDate,
         int? EnrollmentStaffId,
-        string? EnrollmentStaffName 
+        string? EnrollmentStaffName
     );
 }

@@ -11,5 +11,11 @@ namespace LearnWellUniversity.Application.Models.Requestes
         string? Position, 
         DateTime? DateOfBirth, 
         int DepartmentId
-    ): CreateRequestBase;
+    ): CreateRequestBase
+    {        
+        public string Password { get; set; } = default!;
+        public int[] RoleIds { get; set; } = default!;
+
+        public int? UserId { get; set; }
+    }
 }

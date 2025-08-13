@@ -9,6 +9,7 @@ namespace LearnWellUniversity.Application.Contracts.Auths
 {
     public interface IJwtTokenGenerator
     {
-        string GenerateToken(User user, int? staffId, int? studentId, IEnumerable<Role> roles);
+        (string AccessToken, DateTime AccessTokenExpiresAt) GenerateAccessToken(User user, int? staffId, int? studentId, IEnumerable<Role> roles);
+        (string RefreshToken, DateTime RefreshTokenExpiresAt) GenerateRefreshToken();
     }
 }

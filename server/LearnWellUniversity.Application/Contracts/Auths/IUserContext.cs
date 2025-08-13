@@ -13,5 +13,9 @@
         string? StudentId { get; }
 
         string? GetClaim(string claimType);
+
+        T? GetTypedClaim<T>(string claimType);
+
+        T? GetTypedFromValue<T>(string? claimValue);
     }
 }

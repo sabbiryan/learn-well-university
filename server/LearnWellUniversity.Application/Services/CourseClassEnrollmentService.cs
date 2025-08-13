@@ -1,4 +1,5 @@
 ﻿using LearnWellUniversity.Application.Contracts;
+using LearnWellUniversity.Application.Contracts.Auths;
 using LearnWellUniversity.Application.Contracts.UoW;
 using LearnWellUniversity.Application.Models.Dtos;
 using LearnWellUniversity.Application.Models.Requestes;
@@ -8,7 +9,8 @@ using MapsterMapper;
 namespace LearnWellUniversity.Application.Services
 {
     public class CourseClassEnrollmentService(IUnitOfWork unitOfWork,
-        IMapper mapper) : ICourseClassEnrollmentService
+        IMapper mapper,
+        IUserContext userContext) : ICourseClassEnrollmentService
     {
         public async Task<CourseClassDto> EnrollAsync(CourseClassRequest request)
         {            
@@ -23,6 +25,7 @@ namespace LearnWellUniversity.Application.Services
             try
             {                
                 courseClass = mapper.Map<CourseClass>(request);
+                courseClass.EnrollmentStaffId = userContext.GetTypedFromValue<int?>(userContext.StaffId);
 
                 await unitOfWork.Repository<CourseClass>().AddAsync(courseClass);
 

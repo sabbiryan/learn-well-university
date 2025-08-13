@@ -4,13 +4,14 @@ using LearnWellUniversity.Infrastructure.Constants;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace LearnWellUniversity.Infrastructure.Auths
 {
     public class JwtTokenGenerator() : IJwtTokenGenerator
     {
-        public string GenerateToken(User user, int? staffId, int? studentId, IEnumerable<Role> roles)
+        public (string AccessToken, DateTime AccessTokenExpiresAt) GenerateAccessToken(User user, int? staffId, int? studentId, IEnumerable<Role> roles)
         {
             var claims = new List<Claim>
             {
@@ -41,16 +42,30 @@ namespace LearnWellUniversity.Infrastructure.Auths
 
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
+            var expiresAt = DateTime.Now.AddHours(1);
+
             var token = new JwtSecurityToken(
                 issuer: AppSettingValues.JwtIssuer,
                 audience: AppSettingValues.JwtAudience,
                 claims: claims,
-                expires: DateTime.Now.AddHours(1),
+                expires: expiresAt,
                 signingCredentials: creds);
 
             var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
 
-            return tokenString;
+            return (tokenString, expiresAt);
+        }
+
+
+        public (string RefreshToken, DateTime RefreshTokenExpiresAt) GenerateRefreshToken()
+        {
+            var bytes = RandomNumberGenerator.GetBytes(64);
+
+            var refreshToken = Convert.ToBase64String(bytes);
+
+            var expiresAt = DateTime.UtcNow.AddDays(7);
+
+            return (refreshToken, expiresAt);
         }
     }
 }

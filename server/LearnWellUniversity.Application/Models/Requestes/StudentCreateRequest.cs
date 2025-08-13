@@ -4,13 +4,20 @@ using LearnWellUniversity.Domain.Enums;
 namespace LearnWellUniversity.Application.Models.Requestes
 {
     public record StudentCreateRequest(
+        string Code,
         string FirstName, 
         string LastName, 
-        string? Phone, 
-        string Code, 
-        AcademicLevel AcademicLevel, 
-        DateTime? EnrollmentDate, 
+        string Email,
+        string? Phone,         
+        AcademicLevel AcademicLevel,         
         DateTime? DateOfBirth, 
-        int DepartmentId): CreateRequestBase;
+        int DepartmentId,
+        DateTime? EnrollmentDate) : CreateRequestBase
+    {
+        public string Password { get; set; } = default!;
+        public int[] RoleIds { get; set; } = default!;
+
+        public int? UserId { get; set; }
+    }
 
 }

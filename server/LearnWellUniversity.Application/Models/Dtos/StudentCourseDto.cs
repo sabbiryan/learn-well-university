@@ -6,10 +6,12 @@
        string? StudentName,
        int CourseId,
        string? CourseCode,
-       string? CourseName,
-       DateTime? EnrollmentDate,
+       string? CourseName,       
        decimal? Score,
        int? GradingId,
-       string? GradingName
+       string? GradingName,
+       DateTime? EnrollmentDate = null,
+       int? EnrollmentStaffId = null,
+       string? EnrollmentStaffName = null
    );
 }

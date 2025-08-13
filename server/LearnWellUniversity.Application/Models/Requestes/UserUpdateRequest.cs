@@ -12,7 +12,7 @@ namespace LearnWellUniversity.Application.Models.Requestes
         string LastName, 
         string? Phone, 
         bool IsActive, 
-        int[] RoleIds
+        int[]? RoleIds = default
     ) : UpdateRequestBase<int>;    
 
 

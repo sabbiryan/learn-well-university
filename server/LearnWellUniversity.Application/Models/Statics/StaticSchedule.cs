@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LearnWellUniversity.Infrastructure.Persistences.Seeds.Models
+namespace LearnWellUniversity.Application.Models.Statics
 {
     public record StaticSchedule(Day Day, TimeOnly StartTime, TimeOnly EndTime)
     {

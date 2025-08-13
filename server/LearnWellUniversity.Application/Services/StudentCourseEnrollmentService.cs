@@ -1,9 +1,11 @@
 ﻿using LearnWellUniversity.Application.Contracts;
+using LearnWellUniversity.Application.Contracts.Auths;
 using LearnWellUniversity.Application.Contracts.UoW;
 using LearnWellUniversity.Application.Models.Dtos;
 using LearnWellUniversity.Application.Models.Requestes;
 using LearnWellUniversity.Domain.Entities;
 using MapsterMapper;
+using Microsoft.Extensions.Logging;
 
 namespace LearnWellUniversity.Application.Services
 {
@@ -11,7 +13,9 @@ namespace LearnWellUniversity.Application.Services
 
     public class StudentCourseEnrollmentService(IUnitOfWork unitOfWork,
         IMapper mapper,
-        ICourseClassEnrollmentService courseClassEnrollmentService) : IStudentCourseEntrollmentService
+        ICourseClassEnrollmentService courseClassEnrollmentService,
+        IUserContext userContext,
+        ILogger<StudentCourseEnrollmentService> logger) : IStudentCourseEntrollmentService
     {
         public async Task<StudentCourseDto> EnrollAsync(StudentCourseRequest request)
         {
@@ -26,18 +30,22 @@ namespace LearnWellUniversity.Application.Services
             try
             {
                 studentCourse = mapper.Map<StudentCourse>(request);
+                studentCourse.EnrollmentStaffId = userContext.GetTypedFromValue<int?>(userContext.StaffId);
 
-                await unitOfWork.Repository<StudentCourse>().AddAsync(studentCourse);
+                await unitOfWork.ExecuteInTransactionAsync(async () =>
+                {
+                    await unitOfWork.Repository<StudentCourse>().AddAsync(studentCourse);
 
-                await unitOfWork.SaveChangesAsync();
+                    await unitOfWork.SaveChangesAsync();
 
-                await courseClassEnrollmentService.EnrollAsync(new CourseClassRequest(request.CourseId, request.ClassId));
+                    await courseClassEnrollmentService.EnrollAsync(new CourseClassRequest(request.CourseId, request.ClassId));
+                });
 
                 return mapper.Map<StudentCourseDto>(studentCourse);
             }
             catch (Exception ex)
             {
-                await unitOfWork.RollbackTransactionAsync();
+                logger.LogError(ex, "Error occurred while enrolling student in the course");
 
                 throw new InvalidOperationException("Failed to enroll student in the course.", ex);
             }
@@ -55,21 +63,21 @@ namespace LearnWellUniversity.Application.Services
 
             try
             {
-                await unitOfWork.BeginTransactionAsync();
 
-                unitOfWork.Repository<StudentCourse>().Remove(studentCourse);
+                await unitOfWork.ExecuteInTransactionAsync(async () =>
+                {
+                    unitOfWork.Repository<StudentCourse>().Remove(studentCourse);
 
-                await unitOfWork.SaveChangesAsync();
+                    await unitOfWork.SaveChangesAsync();
 
-                await courseClassEnrollmentService.UnenrollAsync(new CourseClassRequest(request.CourseId, request.ClassId));
-
-                await unitOfWork.CommitTransactionAsync();
+                    await courseClassEnrollmentService.UnenrollAsync(new CourseClassRequest(request.CourseId, request.ClassId));
+                });
 
                 return mapper.Map<StudentCourseDto>(studentCourse);
             }
             catch (Exception ex)
             {
-                await unitOfWork.RollbackTransactionAsync();
+                logger.LogError(ex, "Error occurred while unenrolling student from the course");
 
                 throw new InvalidOperationException("Failed to unenroll student from the course.", ex);
             }

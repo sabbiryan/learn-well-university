@@ -19,9 +19,9 @@ namespace LearnWellUniversity.Infrastructure.Persistences.EntityConfigurations
                 e.Property(g => g.Id).ValueGeneratedOnAdd();
                 e.Property(g => g.Name).IsRequired().HasMaxLength(100);
                 e.Property(g => g.Description).HasMaxLength(500);
-                e.Property(g => g.MinScore).HasPrecision(3, 2).IsRequired();
-                e.Property(g => g.MaxScore).HasPrecision(3, 2).IsRequired();
-                e.Property(g => g.GradePoint).HasPrecision(3,2).IsRequired();
+                e.Property(g => g.MinScore).HasPrecision(5, 2).IsRequired();
+                e.Property(g => g.MaxScore).HasPrecision(5, 2).IsRequired();
+                e.Property(g => g.GradePoint).HasPrecision(5,2).IsRequired();
                 e.Property(g => g.IsActive).IsRequired().HasDefaultValue(true);
             });
 
@@ -92,7 +92,7 @@ namespace LearnWellUniversity.Infrastructure.Persistences.EntityConfigurations
                 e.HasIndex(c => c.Code).IsUnique();
                 e.Property(c => c.Name).IsRequired().HasMaxLength(100);
                 e.Property(c => c.Description).HasMaxLength(500);
-                e.Property(c => c.CreditHour).HasPrecision(3, 2).IsRequired().HasDefaultValue(0);
+                e.Property(c => c.CreditHour).HasPrecision(5, 2).IsRequired().HasDefaultValue(0);
             });
 
             modelBuilder.Entity<CourseClass>(e =>
@@ -118,7 +118,7 @@ namespace LearnWellUniversity.Infrastructure.Persistences.EntityConfigurations
             modelBuilder.Entity<StudentCourse>(e =>
             {
                 e.HasKey(sc => new { sc.StudentId, sc.CourseId });
-                e.Property(sc => sc.Score).HasPrecision(3, 2).IsRequired(false);
+                e.Property(sc => sc.Score).HasPrecision(5, 2).IsRequired(false);
 
                 e.HasOne(g => g.Grading)
                     .WithMany()

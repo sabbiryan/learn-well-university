@@ -1,5 +1,5 @@
-﻿using LearnWellUniversity.Domain.Entities;
-using LearnWellUniversity.Infrastructure.Persistences.Seeds.Models;
+﻿using LearnWellUniversity.Application.Models.Statics;
+using LearnWellUniversity.Domain.Entities;
 using Microsoft.Extensions.Logging;
 
 namespace LearnWellUniversity.Infrastructure.Persistences.Seeds

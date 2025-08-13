@@ -7,9 +7,14 @@ namespace LearnWellUniversity.Application.Contracts.Auths
     public interface IAuthService: IApplicationService
     {
         Task<SignupResponse> RegisterAsync(SignupRequest request);
-        Task<TokenResponse> LoginAsync(TokenRequest request);
+        Task<TokenResponse> LoginAsync(TokenRequest request, string ipAddress);
+
+        Task<TokenResponse> RefreshTokenAsync(TokenRefreshRequest request, string ipAddress);
+        Task<bool> RevokeRefreshTokenAsync(TokenRefreshRequest request, string ipAddress);
+
 
         Task AssingUserToRoles(int userId, int[] RoleIds);
         Task RemoveUserFromRoles(int id);
+
     }
 }

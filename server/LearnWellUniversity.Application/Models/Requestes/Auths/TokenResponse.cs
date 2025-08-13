@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace LearnWellUniversity.Application.Models.Requestes.Auths
 {
-    public record TokenResponse(string Token, string Email);
+    public record TokenResponse(string AccessToken, DateTime AccessTokenExpiresAt, string RefreshToken, DateTime RefreshTokenExpiresAt, string TokenType = "Bearer");
 }

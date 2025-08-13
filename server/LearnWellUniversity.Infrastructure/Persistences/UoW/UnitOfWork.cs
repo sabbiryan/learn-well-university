@@ -1,5 +1,6 @@
 ﻿using LearnWellUniversity.Application.Contracts.UoW;
 using MapsterMapper;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace LearnWellUniversity.Infrastructure.Persistences.UoW
@@ -23,47 +24,42 @@ namespace LearnWellUniversity.Infrastructure.Persistences.UoW
 
         public async Task<int> SaveChangesAsync() => await context.SaveChangesAsync();
 
-        public async Task BeginTransactionAsync()
+        
+        public async Task ExecuteInTransactionAsync(Func<Task> action)
         {
-            _transaction ??= await context.Database.BeginTransactionAsync();
-        }
+            var strategy = context.Database.CreateExecutionStrategy();
 
-        public async Task CommitTransactionAsync()
-        {
-            if (_transaction != null)
+            await strategy.ExecuteAsync(async () =>
             {
-                await _transaction.CommitAsync();
-                await _transaction.DisposeAsync();
-                _transaction = null;
-            }
-        }
+                await using var transaction = await context.Database.BeginTransactionAsync();
 
-        public async Task RollbackTransactionAsync()
-        {
-            if (_transaction != null)
-            {
-                await _transaction.RollbackAsync();
-                await _transaction.DisposeAsync();
-                _transaction = null;
-            }
+                try
+                {
+                    await action();
+                    await transaction.CommitAsync();
+                }
+                catch
+                {
+                    await transaction.RollbackAsync();
+                    throw;
+                }
+            });
         }
 
         protected virtual void Dispose(bool disposing)
         {
             if (disposing)
             {
-                if (_transaction != null)
-                {
-                    _transaction.Dispose();
-                    _transaction = null;
-                }
+                _transaction?.Dispose();
+                _transaction = null;
             }
         }
 
         public void Dispose()
         {
             Dispose(true);
-            GC.SuppressFinalize(this); 
+            GC.SuppressFinalize(this);
         }
     }
+
 }

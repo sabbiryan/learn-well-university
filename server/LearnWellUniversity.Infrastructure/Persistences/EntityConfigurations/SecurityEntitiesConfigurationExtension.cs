@@ -49,6 +49,18 @@ namespace LearnWellUniversity.Infrastructure.Persistences.EntityConfigurations
             {
                 e.HasKey(ur => new { ur.UserId, ur.RoleId });
             });
+
+
+            modelBuilder.Entity<RefreshToken>(e =>
+            {
+                e.HasKey(rt => rt.Id);
+                e.Property(rt => rt.Token).ValueGeneratedNever();
+                e.Property(rt => rt.Token).IsRequired().HasMaxLength(500);
+                e.HasOne(rt => rt.User)
+                    .WithMany(u => u.RefreshTokens)
+                    .HasForeignKey(rt => rt.UserId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
         }
     }
 }

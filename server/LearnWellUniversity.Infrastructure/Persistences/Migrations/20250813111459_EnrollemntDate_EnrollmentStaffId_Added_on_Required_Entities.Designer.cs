@@ -3,6 +3,7 @@ using System;
 using LearnWellUniversity.Infrastructure.Persistences;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LearnWellUniversity.Infrastructure.Persistences.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250813111459_EnrollemntDate_EnrollmentStaffId_Added_on_Required_Entities")]
+    partial class EnrollemntDate_EnrollmentStaffId_Added_on_Required_Entities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -80,57 +83,6 @@ namespace LearnWellUniversity.Infrastructure.Persistences.Migrations
                         .HasName("pk_addresses");
 
                     b.ToTable("addresses", (string)null);
-                });
-
-            modelBuilder.Entity("LearnWellUniversity.Domain.Entities.Auths.RefreshToken", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_at");
-
-                    b.Property<string>("CreatedByIp")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("created_by_ip");
-
-                    b.Property<DateTime>("ExpiresAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("expires_at");
-
-                    b.Property<string>("ReplacedByToken")
-                        .HasColumnType("text")
-                        .HasColumnName("replaced_by_token");
-
-                    b.Property<DateTime?>("Revoked")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("revoked");
-
-                    b.Property<string>("RevokedByIp")
-                        .HasColumnType("text")
-                        .HasColumnName("revoked_by_ip");
-
-                    b.Property<string>("Token")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)")
-                        .HasColumnName("token");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer")
-                        .HasColumnName("user_id");
-
-                    b.HasKey("Id")
-                        .HasName("pk_refresh_tokens");
-
-                    b.HasIndex("UserId")
-                        .HasDatabaseName("ix_refresh_tokens_user_id");
-
-                    b.ToTable("refresh_tokens", (string)null);
                 });
 
             modelBuilder.Entity("LearnWellUniversity.Domain.Entities.Auths.Resource", b =>
@@ -1051,18 +1003,6 @@ namespace LearnWellUniversity.Infrastructure.Persistences.Migrations
                     b.ToTable("student_courses", (string)null);
                 });
 
-            modelBuilder.Entity("LearnWellUniversity.Domain.Entities.Auths.RefreshToken", b =>
-                {
-                    b.HasOne("LearnWellUniversity.Domain.Entities.Auths.User", "User")
-                        .WithMany("RefreshTokens")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_refresh_tokens_users_user_id");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("LearnWellUniversity.Domain.Entities.Auths.RoleResource", b =>
                 {
                     b.HasOne("LearnWellUniversity.Domain.Entities.Auths.Resource", "Resource")
@@ -1317,8 +1257,6 @@ namespace LearnWellUniversity.Infrastructure.Persistences.Migrations
 
             modelBuilder.Entity("LearnWellUniversity.Domain.Entities.Auths.User", b =>
                 {
-                    b.Navigation("RefreshTokens");
-
                     b.Navigation("Staffs");
 
                     b.Navigation("Students");

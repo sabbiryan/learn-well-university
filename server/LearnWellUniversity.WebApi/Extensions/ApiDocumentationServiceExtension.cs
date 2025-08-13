@@ -2,6 +2,8 @@
 
 namespace LearnWellUniversity.WebApi.Extensions
 {
+
+
     public static class ApiDocumentationServiceExtension
     {
         public static IServiceCollection AddApiDocumentations(this IServiceCollection services)

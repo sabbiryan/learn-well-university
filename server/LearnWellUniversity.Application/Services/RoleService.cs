@@ -4,29 +4,36 @@ using LearnWellUniversity.Application.Models.Dtos.Auths;
 using LearnWellUniversity.Application.Models.Requestes;
 using LearnWellUniversity.Domain.Entities.Auths;
 using MapsterMapper;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualBasic;
 
 namespace LearnWellUniversity.Application.Services
 {
-    public class RoleService(IUnitOfWork unitOfWork, IMapper mapper) : ApplicationCrudService<Role, RoleDto, int, RoleCreateRequest, RoleUpdateRequest>(unitOfWork, mapper), IRoleService
+    public class RoleService(IUnitOfWork unitOfWork, 
+        IMapper mapper,
+        ILogger<RoleService> logger) : ApplicationCrudService<Role, RoleDto, int, RoleCreateRequest, RoleUpdateRequest>(unitOfWork, mapper), IRoleService
     {
         public override async Task<int> AddAsync(RoleCreateRequest request)
         {
 			try
 			{
-                await unitOfWork.BeginTransactionAsync();
+                var role = mapper.Map<Role>(request);
 
-                var roleId =  await base.AddAsync(request);
+                await unitOfWork.ExecuteInTransactionAsync(async () =>
+                {                    
+                    await unitOfWork.Repository<Role>().AddAsync(role);
+                    
+                    await unitOfWork.SaveChangesAsync();
 
-                await ResourcesAssingToRole(roleId, request.ResourceIds);
+                    await ResourcesAssingToRole(role.Id, request.ResourceIds);
 
-                await unitOfWork.CommitTransactionAsync();
+                });
 
-                return roleId;
+                return role.Id;
             }
 			catch (Exception e)
 			{
-                await unitOfWork.RollbackTransactionAsync();
+                logger.LogError(e, "Error occurred while adding role");
 
                 throw;
 			}
@@ -36,7 +43,7 @@ namespace LearnWellUniversity.Application.Services
         private async Task ResourcesAssingToRole(int roleId, int[]? resourceIds)
         {
 
-            if (resourceIds != null && resourceIds.Any())
+            if (resourceIds != null && resourceIds.Length != 0)
             {
                 var roleResources = resourceIds.Select(resourceId => new RoleResource
                 {

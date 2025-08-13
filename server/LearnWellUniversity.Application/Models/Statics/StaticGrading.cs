@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LearnWellUniversity.Infrastructure.Persistences.Seeds.Models
+namespace LearnWellUniversity.Application.Models.Statics
 {
     public record StaticGrading(string Name, string Description, decimal MinScore, decimal MaxScore, decimal GradePoint, bool IsActive = true)
     {

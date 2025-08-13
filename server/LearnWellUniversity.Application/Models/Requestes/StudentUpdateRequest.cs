@@ -4,14 +4,14 @@ using LearnWellUniversity.Domain.Enums;
 namespace LearnWellUniversity.Application.Models.Requestes
 {
     public record StudentUpdateRequest(
+        string Code,
         string FirstName, 
         string LastName, 
-        string? Phone, 
-        string Code, 
+        string? Phone,         
         AcademicLevel AcademicLevel, 
-        DateTime? EnrollmentDate, 
         DateTime? DateOfBirth, 
-        int DepartmentId
+        int DepartmentId,
+        DateTime? EnrollmentDate
     ) : UpdateRequestBase<int>;
 
 }
