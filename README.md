@@ -42,16 +42,23 @@ DefaultConnection": "Host=postgres;Port=5433;Database=LearnWellUniversityDb;User
 
 "Serilog":"WriteTo":"Args":"serverUrl": "http://seq:80"
 ```
-Now run 
+Now run the following commands
 ```
-docker compose -p learnwelluniversity up
+docker compose -p learnwelluniversity up -d --build
 
 ```
 
-### Now check the following urls:
+### In both cases, you can check the following urls to see the output:
 * SEQ: http://localhost:5341
 * Web Api: https://localhost:7105 //make sure you are using https
- 
+
+### Web API Login
+```
+//Admin Login
+Username: admin@user.email
+Password: Admin@1!
+```
+Start playing with apis from swagger UI
 
 
 
