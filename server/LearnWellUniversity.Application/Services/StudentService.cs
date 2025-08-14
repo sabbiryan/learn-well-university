@@ -6,7 +6,6 @@ using LearnWellUniversity.Application.Models.Dtos.Auths;
 using LearnWellUniversity.Application.Models.Requestes;
 using LearnWellUniversity.Domain.Entities;
 using MapsterMapper;
-using Microsoft.AspNetCore.Http.Features.Authentication;
 using System.Linq.Expressions;
 
 namespace LearnWellUniversity.Application.Services
@@ -57,6 +56,33 @@ namespace LearnWellUniversity.Application.Services
             });
 
             return id;
+        }
+
+
+        public async Task<List<StudentClassessFriendListDto>> GetClassesFriendsAsync(int studentId)
+        {
+            if (studentId <= 0)
+            {
+                throw new ArgumentException("Invalid student ID");
+            }
+
+            var studentClasses = await _unitOfWork.Repository<StudentClass>()
+                .FilterAsync(sc => sc.StudentId == studentId, x=> x.Class, x => x.Student);
+
+            var studentClassFriends = studentClasses.Select(x => new { ClassName = x.Class.Name, x.Student })
+                .GroupBy(x => x.ClassName)
+                .ToList()
+                .ConvertAll(x => new StudentClassessFriendListDto
+                {
+                    ClassName = x.Key,
+                    Friends = [.. x.Select(f => new StudentClassFriendDto
+                    {
+                        FirstName = f.Student.FirstName,
+                        LastName = f.Student.LastName
+                    })]
+                });
+
+            return studentClassFriends;
         }
     }
 

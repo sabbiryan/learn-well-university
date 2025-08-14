@@ -17,7 +17,7 @@ namespace LearnWellUniversity.WebApi.Controllers
         [HttpGet]
         public async Task<ApiResponse<PaginatedResult<UserDto>>> GetAllAsync([FromQuery] DynamicQueryRequest query)
         {
-            if (query == null) throw new ArgumentNullException(nameof(query));
+            ArgumentNullException.ThrowIfNull(query);
 
             var result = await userService.GetPagedAsync(query);
 
@@ -45,9 +45,9 @@ namespace LearnWellUniversity.WebApi.Controllers
         {
             if (id != request.Id) throw new ArgumentException("Id in the route does not match Id in the request body.");
 
-            if (request == null) throw new ArgumentNullException(nameof(request));
+            ArgumentNullException.ThrowIfNull(request);
 
-            if (request.Id <= 0) throw new ArgumentOutOfRangeException(nameof(request.Id), "Id must be greater than zero.");
+            if (request.Id <= 0) throw new ArgumentOutOfRangeException(nameof(request), "Id must be greater than zero.");
 
             var result = await userService.UpdateAsync(request);
 

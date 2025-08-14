@@ -4,5 +4,8 @@ using LearnWellUniversity.Application.Models.Requestes;
 
 namespace LearnWellUniversity.Application.Contracts
 {
-    public interface IStudentService : IApplicationCrudService<StudentDto, int, StudentCreateRequest, StudentUpdateRequest>;
+    public interface IStudentService : IApplicationCrudService<StudentDto, int, StudentCreateRequest, StudentUpdateRequest>
+    {
+        Task<List<StudentClassessFriendListDto>> GetClassesFriendsAsync(int studentId);
+    }
 }
