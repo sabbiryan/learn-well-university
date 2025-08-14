@@ -11,7 +11,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LearnWellUniversity.Infrast
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LearnWellUniversity.Domain", "LearnWellUniversity.Domain\LearnWellUniversity.Domain.csproj", "{576EFCCA-3525-4EBB-A948-438D221721CD}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LearnWellUniversity.Domain.UnitTests", "tests\LearnWellUniversity.Domain.UnitTests\LearnWellUniversity.Domain.UnitTests.csproj", "{ADA48BF6-F5FC-1563-3B71-8B1C50712B50}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LearnWellUniversity.Application.UnitTests", "tests\LearnWellUniversity.Application.UnitTests\LearnWellUniversity.Application.UnitTests.csproj", "{7D7A6EDF-1DC6-FB22-DD96-4B0FE0BB29D9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LearnWellUniversity.Infrastructure.IntegrationTests", "tests\LearnWellUniversity.Infrastructure.IntegrationTests\LearnWellUniversity.Infrastructure.IntegrationTests.csproj", "{6A5133A4-BF23-442E-B680-79849F9202E9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LearnWellUniversity.WebApi.FunctionalTests", "tests\LearnWellUniversity.WebApi.FunctionalTests\LearnWellUniversity.WebApi.FunctionalTests.csproj", "{C610DC1B-5F55-498E-9D61-34DBA47FEF52}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,9 +43,31 @@ Global
 		{576EFCCA-3525-4EBB-A948-438D221721CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{576EFCCA-3525-4EBB-A948-438D221721CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{576EFCCA-3525-4EBB-A948-438D221721CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADA48BF6-F5FC-1563-3B71-8B1C50712B50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADA48BF6-F5FC-1563-3B71-8B1C50712B50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADA48BF6-F5FC-1563-3B71-8B1C50712B50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADA48BF6-F5FC-1563-3B71-8B1C50712B50}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D7A6EDF-1DC6-FB22-DD96-4B0FE0BB29D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D7A6EDF-1DC6-FB22-DD96-4B0FE0BB29D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D7A6EDF-1DC6-FB22-DD96-4B0FE0BB29D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D7A6EDF-1DC6-FB22-DD96-4B0FE0BB29D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A5133A4-BF23-442E-B680-79849F9202E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A5133A4-BF23-442E-B680-79849F9202E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A5133A4-BF23-442E-B680-79849F9202E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A5133A4-BF23-442E-B680-79849F9202E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C610DC1B-5F55-498E-9D61-34DBA47FEF52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C610DC1B-5F55-498E-9D61-34DBA47FEF52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C610DC1B-5F55-498E-9D61-34DBA47FEF52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C610DC1B-5F55-498E-9D61-34DBA47FEF52}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{ADA48BF6-F5FC-1563-3B71-8B1C50712B50} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{7D7A6EDF-1DC6-FB22-DD96-4B0FE0BB29D9} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{6A5133A4-BF23-442E-B680-79849F9202E9} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{C610DC1B-5F55-498E-9D61-34DBA47FEF52} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FE18267E-AEEA-4AA4-80E7-AE24C0AB9A96}
