@@ -60,6 +60,10 @@ Password: Admin@1!
 ```
 Start playing with apis from swagger UI
 
+## ER Diagram
+
+<img src="ERDiagram.png"></img>
+
 
 
 
