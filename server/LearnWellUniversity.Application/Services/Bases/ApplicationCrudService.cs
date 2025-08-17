@@ -8,7 +8,7 @@ using LearnWellUniversity.Domain.Entities.Bases;
 using MapsterMapper;
 using System.Linq.Expressions;
 
-namespace LearnWellUniversity.Application.Services
+namespace LearnWellUniversity.Application.Services.Bases
 {
     public abstract class ApplicationCrudService<TEntity, TDto, TPk, TCRequest, TURequest>(
         IUnitOfWork unitOfWork,
@@ -35,7 +35,7 @@ namespace LearnWellUniversity.Application.Services
         public virtual async Task<PaginatedResult<TDto>> GetPagedAsync(DynamicQueryRequest request)
         {
 
-            var result = await unitOfWork.Repository<TEntity>().GetPagedAsync<TDto>(request, Selector, Includes);
+            var result = await unitOfWork.Repository<TEntity>().GetPagedAsync(request, Selector, Includes);
 
             return result;
         }
@@ -71,10 +71,7 @@ namespace LearnWellUniversity.Application.Services
             //var id = (TPk)typeof(TURequest).GetProperty("Id")!.GetValue(request)!;
             var id = request.Id;
 
-            var entity = await unitOfWork.Repository<TEntity>().GetByIdAsync(id);
-
-            if (entity == null) throw new EntityNotFoundException(typeof(TEntity).Name, id!);
-
+            var entity = await unitOfWork.Repository<TEntity>().GetByIdAsync(id) ?? throw new EntityNotFoundException(typeof(TEntity).Name, id!);
 
             mapper.Map(request, entity);
 
@@ -86,9 +83,7 @@ namespace LearnWellUniversity.Application.Services
 
         public virtual async Task DeleteAsync(TPk id)
         {
-            var entity = await unitOfWork.Repository<TEntity>().GetByIdAsync(id);
-            
-            if (entity == null) throw new EntityNotFoundException(typeof(TEntity).Name, id!);
+            var entity = await unitOfWork.Repository<TEntity>().GetByIdAsync(id) ?? throw new EntityNotFoundException(typeof(TEntity).Name, id!);
 
             unitOfWork.Repository<TEntity>().Remove(entity);
 

@@ -4,6 +4,7 @@ using LearnWellUniversity.Application.Contracts.UoW;
 using LearnWellUniversity.Application.Models.Dtos;
 using LearnWellUniversity.Application.Models.Dtos.Auths;
 using LearnWellUniversity.Application.Models.Requestes;
+using LearnWellUniversity.Application.Services.Bases;
 using LearnWellUniversity.Domain.Entities;
 using MapsterMapper;
 using System.Linq.Expressions;

@@ -1,5 +1,6 @@
 using LearnWellUniversity.Infrastructure.Extensions;
 using LearnWellUniversity.WebApi.Extensions;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,6 +36,8 @@ if (app.Environment.IsDevelopment())
     app.UseSeedData();
 }
 
+app.UseSerilogRequestLogging();
+
 app.UseHttpsRedirection();
 
 app.UseGlobalExceptionHandler();
@@ -50,3 +53,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+public partial class Program;

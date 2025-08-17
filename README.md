@@ -9,7 +9,6 @@ This is a simple university course management domain project, where includes stu
 
 ## Tech Insights
 * Clean Architecture
-* DDD
 * Generic Repository Pattern
 * Unit of Work
 * Generic CRUD Apis (See details bellow how to use it)

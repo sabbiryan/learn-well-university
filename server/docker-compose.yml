@@ -24,6 +24,28 @@ services:
     networks:
       - backend
 
+  redis:
+    image: redis:latest
+    container_name: learnwelluniversity.redis
+    command: ["redis-server", "--requirepass", "pass123"]
+    #ports:
+    #  - "6379:6379"
+    networks:
+      - backend
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: learnwelluniversity.rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: pass123
+    ports:
+      #- "5672:5672"   # for applications
+      - "15672:15672" # for management UI
+    networks:
+      - backend 
+
+
   learnwelluniversity.webapi:
     image: learnwelluniversitywebapi
     container_name: learnwelluniversity.webapi
@@ -36,6 +58,8 @@ services:
     depends_on:
       - seq
       - postgres
+      - redis
+      - rabbitmq
     networks:
       - backend
 

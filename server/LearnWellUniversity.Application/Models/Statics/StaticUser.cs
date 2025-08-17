@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LearnWellUniversity.Application.Models.Statics
 {
-    public record StaticUser(string FirstName, string LastName, string Email, string? Phone, string password)
+    public record StaticUser(string FirstName, string LastName, string Email, string? Phone, string Password)
     {
         public static StaticUser Admin { get; } = new StaticUser("Admin", "User", "admin@user.email", null, "Admin@1!");
         public static StaticUser Staff { get; } = new StaticUser("Staff", "User", "staff@user.email", null, "Staff@1!");

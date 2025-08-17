@@ -33,7 +33,7 @@ namespace LearnWellUniversity.Infrastructure.Persistences.Seeds
             {
                 foreach (var user in StaticUser.AllUsers)
                 {
-                    PasswordHasher.CreatePasswordHash(user.password, out byte[] passwordHash, out byte[] passwordSalt);
+                    PasswordHasher.CreatePasswordHash(user.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
                     context.Users.Add(new User
                     {
