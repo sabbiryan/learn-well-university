@@ -19,7 +19,7 @@ namespace LearnWellUniversity.Infrastructure.Persistences.EntityConfigurations
                 e.HasKey(r => r.Id);
                 e.Property(r => r.Id).ValueGeneratedOnAdd();
                 e.Property(r => r.Name).IsRequired().HasMaxLength(100);
-                e.Property(r => r.DisplayName).IsRequired().HasMaxLength(200);
+                e.Property(r => r.DisplayName).IsRequired().HasMaxLength(200);                
             });
 
             modelBuilder.Entity<RoleResource>(e =>

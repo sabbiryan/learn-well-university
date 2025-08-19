@@ -10,21 +10,30 @@ using Microsoft.VisualBasic;
 
 namespace LearnWellUniversity.Application.Services
 {
-    public class RoleService(IUnitOfWork unitOfWork, 
-        IMapper mapper,
-        ILogger<RoleService> logger) : ApplicationCrudService<Role, RoleDto, int, RoleCreateRequest, RoleUpdateRequest>(unitOfWork, mapper), IRoleService
+    public class RoleService : ApplicationCrudService<Role, RoleDto, int, RoleCreateRequest, RoleUpdateRequest>, IRoleService
     {
+        private readonly ILogger<RoleService> _logger;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
+
+        public RoleService(IUnitOfWork unitOfWork, IMapper mapper, ILogger<RoleService> logger) : base(unitOfWork, mapper)
+        {
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
+            _logger = logger;
+        }
+
         public override async Task<int> AddAsync(RoleCreateRequest request)
         {
 			try
 			{
-                var role = mapper.Map<Role>(request);
+                var role = _mapper.Map<Role>(request);
 
-                await unitOfWork.ExecuteInTransactionAsync(async () =>
+                await _unitOfWork.ExecuteInTransactionAsync(async () =>
                 {                    
-                    await unitOfWork.Repository<Role>().AddAsync(role);
+                    await _unitOfWork.Repository<Role>().AddAsync(role);
                     
-                    await unitOfWork.SaveChangesAsync();
+                    await _unitOfWork.SaveChangesAsync();
 
                     await ResourcesAssingToRole(role.Id, request.ResourceIds);
 
@@ -34,7 +43,7 @@ namespace LearnWellUniversity.Application.Services
             }
 			catch (Exception e)
 			{
-                logger.LogError(e, "Error occurred while adding role");
+                _logger.LogError(e, "Error occurred while adding role");
 
                 throw;
 			}
@@ -52,7 +61,7 @@ namespace LearnWellUniversity.Application.Services
                     ResourceId = resourceId
                 }).ToList();
 
-                await unitOfWork.Repository<RoleResource>().BulkInsertOrUpdateAsync(roleResources);
+                await _unitOfWork.Repository<RoleResource>().BulkInsertOrUpdateAsync(roleResources);
             }
 
         }

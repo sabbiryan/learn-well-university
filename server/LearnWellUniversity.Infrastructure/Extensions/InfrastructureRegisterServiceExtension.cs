@@ -34,10 +34,11 @@ namespace LearnWellUniversity.Infrastructure.Extensions
 
                 }
             );
-
-            services.AddSingleton<IPasswordHasher, PasswordHasher>();
+            
+            services.AddSingleton<IPasswordHasher, PasswordHasher>();           
             services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
             services.AddScoped<IUserContext, UserContext>();
+            services.AddScoped<IPermissionChecker, PermissonChecker>();
 
 
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));

@@ -19,6 +19,9 @@ namespace LearnWellUniversity.Infrastructure.Auths
         public IEnumerable<string> Roles => User?.FindAll(ClaimTypes.Role).Select(c => c.Value) ?? [];
         public IEnumerable<string> RoleIds => User?.FindAll(ClaimConstants.RoleId).Select(c => c.Value) ?? [];
 
+        public IEnumerable<string> Permissions => User?.FindAll(ClaimConstants.Permission).Select(c => c.Value) ?? [];
+
+
         public string? StaffId => User?.Claims?.FirstOrDefault(x => x.Type == ClaimConstants.StaffId)?.Value;
         public string? StudentId => User?.Claims?.FirstOrDefault(x => x.Type == ClaimConstants.StudentId)?.Value;
 

@@ -9,6 +9,8 @@
         IEnumerable<string> Roles { get; }
         IEnumerable<string> RoleIds { get; }
 
+        IEnumerable<string> Permissions { get; }
+
         string? StaffId { get; }
         string? StudentId { get; }
 

@@ -15,6 +15,8 @@ namespace LearnWellUniversity.Application.Contracts.Auths
 
         Task AssingUserToRoles(int userId, int[] RoleIds);
         Task RemoveUserFromRoles(int id);
-
+        Task<bool> ChangePasswordAsync(ChangePasswordRequest request);
+        Task<bool> ForgotPasswordAsync(ForgotPasswordRequest request);
+        Task<bool> ResetPasswordAsync(ResetPasswordRequest request);
     }
 }

@@ -199,7 +199,43 @@ namespace LearnWellUniversity.Application.Services
             await unitOfWork.Repository<UserRole>().BulkDeleteAsync(userRoles);
         }
 
+        public async Task<bool> ChangePasswordAsync(ChangePasswordRequest request)
+        {
+            var user = await unitOfWork.Repository<User>().FindAsync(x => x.Id == request.UserId) ?? throw new Exception("User not found");
 
-      
+            if (!passwordHasher.VerifyPasswordHash(request.CurrentPassword, user.PasswordHash, user.PasswordSalt))
+                throw new Exception("Currnet Password does not match");
+
+            var passwordHash = passwordHasher.CreatePasswordHash(request.NewPassword);
+
+            user.PasswordHash = passwordHash.Hash;
+            user.PasswordSalt = passwordHash.Salt;
+
+            unitOfWork.Repository<User>().Update(user);
+
+            await unitOfWork.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> ForgotPasswordAsync(ForgotPasswordRequest request)
+        {
+            var user = await unitOfWork.Repository<User>().FindAsync(x => x.Email == request.Email) ?? throw new Exception("User not found");
+
+            if (!user.IsActive)
+                throw new Exception("User is inactive");
+
+            throw new NotImplementedException("Not implemented yet. Has plan for this next.");
+        }
+
+        public async Task<bool> ResetPasswordAsync(ResetPasswordRequest request)
+        {
+            var user = await unitOfWork.Repository<User>().FindAsync(x => x.Email == request.Email) ?? throw new Exception("User not found");
+
+            if (!user.IsActive)
+                throw new Exception("User is inactive");
+
+            throw new NotImplementedException("Not implemented yet. Has plan for this next.");
+        }
     }
 }

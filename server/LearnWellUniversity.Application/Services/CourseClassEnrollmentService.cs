@@ -44,13 +44,8 @@ namespace LearnWellUniversity.Application.Services
         public async Task<CourseClassDto> UnenrollAsync(CourseClassRequest request)
         {
             var courseClass = await unitOfWork.Repository<CourseClass>()
-                .FindAsync(cc => cc.CourseId == request.CourseId && cc.ClassId == request.ClassId);
-
-            if (courseClass == null)
-            {
-                throw new InvalidOperationException("Enrollment not found.");
-            }
-
+                .FindAsync(cc => cc.CourseId == request.CourseId && cc.ClassId == request.ClassId) ?? throw new InvalidOperationException("Enrollment not found.");
+           
             unitOfWork.Repository<CourseClass>().Remove(courseClass);
 
             await unitOfWork.SaveChangesAsync();

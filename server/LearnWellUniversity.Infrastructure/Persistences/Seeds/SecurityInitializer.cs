@@ -1,6 +1,9 @@
-﻿using LearnWellUniversity.Application.Models.Statics;
+﻿using EFCore.BulkExtensions;
+using LearnWellUniversity.Application.Models.Data;
+using LearnWellUniversity.Application.Models.Statics;
 using LearnWellUniversity.Domain.Entities.Auths;
 using LearnWellUniversity.Infrastructure.Encryptions;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace LearnWellUniversity.Infrastructure.Persistences.Seeds
@@ -9,6 +12,53 @@ namespace LearnWellUniversity.Infrastructure.Persistences.Seeds
     {
         public static void Initialize(AppDbContext context, ILogger logger)
         {
+
+            if(!context.Resources.Any())
+            {
+                foreach (var code in PermissionCodes.GetAllPermissionCodes())
+                {
+                    context.Resources.Add(new Resource
+                    {
+                        Name = code,
+                        DisplayName = code
+                    });
+                }
+                
+                context.SaveChanges();
+
+
+                logger.LogInformation("Resources seeded successfully.");
+            }
+            else
+            {
+                var resources = context.Resources.AsNoTracking().ToList();
+
+                List<Resource> finalResources = [];
+
+                foreach (var code in PermissionCodes.GetAllPermissionCodes())
+                {
+                    var existingResource = resources.FirstOrDefault(r => r.Name.Equals(code));
+
+                    if (existingResource == null)
+                    {
+                        finalResources.Add(new Resource
+                        {
+                            Name = code,
+                            DisplayName = code
+                        });
+                    }
+                    else
+                    {
+                        finalResources.Add(existingResource);
+                    }
+                }
+
+                context.BulkInsertOrUpdateOrDelete(finalResources);
+
+
+                logger.LogInformation("Resources maintanance seeded successfully.");
+            }
+
 
             if (!context.Roles.Any())
             {

@@ -2,12 +2,9 @@
 using LearnWellUniversity.Application.Models.Common;
 using LearnWellUniversity.Application.Models.Dtos.Auths;
 using LearnWellUniversity.Application.Models.Requestes.Auths;
-using LearnWellUniversity.Application.Services;
 using LearnWellUniversity.WebApi.Controllers.Bases;
 using LearnWellUniversity.WebApi.Extensions;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -21,12 +18,12 @@ namespace LearnWellUniversity.WebApi.Controllers
             try
             {
                 var response = await authService.RegisterAsync(request);
-                
+
                 return new ApiResponse<SignupResponse>(response);
             }
             catch (Exception ex)
             {
-                return new ApiResponse<SignupResponse>(new ApiError(HttpStatusCode.BadRequest.ToString() , ex.Message), StatusCodes.Status400BadRequest);
+                return new ApiResponse<SignupResponse>(new ApiError(HttpStatusCode.BadRequest.ToString(), ex.Message), StatusCodes.Status400BadRequest);
             }
         }
 
@@ -38,7 +35,7 @@ namespace LearnWellUniversity.WebApi.Controllers
             {
 
                 var response = await authService.LoginAsync(request, HttpContext.GetClientIp());
-                
+
                 return new ApiResponse<TokenResponse>(response);
 
             }
@@ -73,6 +70,53 @@ namespace LearnWellUniversity.WebApi.Controllers
             {
                 bool result = await authService.RevokeRefreshTokenAsync(request, HttpContext.GetClientIp());
 
+                return new ApiResponse<bool>(result);
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<bool>(new ApiError(HttpStatusCode.BadRequest.ToString(), ex.Message), StatusCodes.Status400BadRequest);
+            }
+        }
+
+
+        [HttpPost("ChangePassword")]
+        public async Task<ApiResponse<bool>> ChangePasswordAsync([FromBody] ChangePasswordRequest request)
+        {
+            try
+            {
+                bool result = await authService.ChangePasswordAsync(request);
+                return new ApiResponse<bool>(result);
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<bool>(new ApiError(HttpStatusCode.BadRequest.ToString(), ex.Message), StatusCodes.Status400BadRequest);
+            }
+        }
+
+
+        [AllowAnonymous]
+        [HttpPost("ForgotPassword")]
+        public async Task<ApiResponse<bool>> ForgotPasswordAsync([FromBody] ForgotPasswordRequest request)
+        {
+            try
+            {
+                bool result = await authService.ForgotPasswordAsync(request);
+                return new ApiResponse<bool>(result);
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<bool>(new ApiError(HttpStatusCode.BadRequest.ToString(), ex.Message), StatusCodes.Status400BadRequest);
+            }
+        }
+
+        
+        [AllowAnonymous]
+        [HttpPost("ResetPassword")]
+        public async Task<ApiResponse<bool>> ResetPasswordAsync([FromBody] ResetPasswordRequest request)
+        {
+            try
+            {
+                bool result = await authService.ResetPasswordAsync(request);
                 return new ApiResponse<bool>(result);
             }
             catch (Exception ex)
