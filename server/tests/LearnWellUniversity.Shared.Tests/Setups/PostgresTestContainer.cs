@@ -1,15 +1,17 @@
 ﻿using Testcontainers.PostgreSql;
+using Xunit;
 
-namespace LearnWellUniversity.WebApi.FunctionalTests.Setups
+namespace LearnWellUniversity.Shared.Tests.Setups
 {
     public class PostgresTestContainer : IAsyncLifetime
     {
-        public PostgreSqlContainer Container { get; private set; } = null!;
-        public string ConnectionString => Container.GetConnectionString();
+        private readonly PostgreSqlContainer _container;
+
+        public string ConnectionString => _container.GetConnectionString();
 
         public PostgresTestContainer()
         {
-            Container = new PostgreSqlBuilder()
+            _container = new PostgreSqlBuilder()
               .WithImage("postgres:latest")
               .WithDatabase("learn_well_university_test_db")
               .WithUsername("postgres")
@@ -21,12 +23,12 @@ namespace LearnWellUniversity.WebApi.FunctionalTests.Setups
 
         public async Task InitializeAsync()
         {          
-            await Container.StartAsync();
+            await _container.StartAsync();
         }
 
         public async Task DisposeAsync()
         {
-            await Container.StopAsync();
+            await _container.StopAsync();
         }
     }
 }

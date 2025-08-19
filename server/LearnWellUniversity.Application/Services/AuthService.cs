@@ -13,6 +13,7 @@ namespace LearnWellUniversity.Application.Services
     public class AuthService(
         IUnitOfWork unitOfWork, 
         IJwtTokenGenerator jwtTokenGenerator,
+        IPasswordHasher passwordHasher,
         ILogger<AuthService> logger
     ) : ApplicationService, IAuthService
     {
@@ -23,7 +24,7 @@ namespace LearnWellUniversity.Application.Services
             if (existingUser != null)
                 throw new Exception("User already exists");
 
-            PasswordHasher.CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
+            var passwordHash = passwordHasher.CreatePasswordHash(request.Password);
 
             var user = new User
             {
@@ -31,8 +32,8 @@ namespace LearnWellUniversity.Application.Services
                 LastName = request.LastName,
                 Email = request.Email,
                 Phone = request.Phone,
-                PasswordHash = passwordHash,
-                PasswordSalt = passwordSalt,
+                PasswordHash = passwordHash.Hash,
+                PasswordSalt = passwordHash.Salt,
                 IsActive = true,
             };
 
@@ -59,9 +60,9 @@ namespace LearnWellUniversity.Application.Services
       
         public async Task<TokenResponse> LoginAsync(TokenRequest request, string ipAddress)
         {
-            var user = await unitOfWork.Repository<User>().FindAsync(x => x.Email.Equals(request.Email));
+            var user = await unitOfWork.Repository<User>().FindAsync(x => x.Email.Equals(request.Email)) ?? throw new Exception("User not found.");
 
-            if (user == null || !PasswordHasher.VerifyPasswordHash(request.Password, user.PasswordHash, user.PasswordSalt))
+            if (!passwordHasher.VerifyPasswordHash(request.Password, user.PasswordHash, user.PasswordSalt))
                 throw new Exception("Invalid credentials");
 
             var userRoles = await unitOfWork.Repository<UserRole>().FilterAsync(x => x.UserId == user.Id, x => x.Role);

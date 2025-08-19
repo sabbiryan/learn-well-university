@@ -1,7 +1,9 @@
 ﻿using LearnWellUniversity.Application.Contracts.Auths;
 using LearnWellUniversity.Application.Contracts.UoW;
+using LearnWellUniversity.Application.Encryptions;
 using LearnWellUniversity.Infrastructure.Auths;
 using LearnWellUniversity.Infrastructure.Constants;
+using LearnWellUniversity.Infrastructure.Encryptions;
 using LearnWellUniversity.Infrastructure.Interceptors;
 using LearnWellUniversity.Infrastructure.Persistences;
 using LearnWellUniversity.Infrastructure.Persistences.UoW;
@@ -33,6 +35,7 @@ namespace LearnWellUniversity.Infrastructure.Extensions
                 }
             );
 
+            services.AddSingleton<IPasswordHasher, PasswordHasher>();
             services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
             services.AddScoped<IUserContext, UserContext>();
 

@@ -1,25 +1,24 @@
 ﻿using LearnWellUniversity.Shared.Tests.Setups;
 
-namespace LearnWellUniversity.WebApi.FunctionalTests.Setups
+namespace LearnWellUniversity.Infrastructure.IntegrationTests.Setups
 {
-    public class FunctionalTestFixture : IAsyncLifetime
+    public class InfrastructureIntegrationTestFixture : IAsyncLifetime
     {
         public PostgresTestContainer PostgresContainer { get; private set; } = null!;
-
-        public FunctionalTestWebApplicationFactory Factory { get; private set; } = null!;
 
 
         public async Task InitializeAsync()
         {
             PostgresContainer = new PostgresTestContainer();
-            await PostgresContainer.InitializeAsync();
             
-            Factory = new FunctionalTestWebApplicationFactory(PostgresContainer.ConnectionString);
+            await PostgresContainer.InitializeAsync();
         }
+
 
         public async Task DisposeAsync()
         {
             await PostgresContainer.DisposeAsync();
         }
+
     }
 }

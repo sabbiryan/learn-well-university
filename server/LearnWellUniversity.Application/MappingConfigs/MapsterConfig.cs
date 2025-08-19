@@ -53,7 +53,7 @@ namespace LearnWellUniversity.Application.MappingConfigs
                 })
                 .TwoWays();
             config.NewConfig<User, UserUpdateRequest>()
-                .MapWith(src => new UserUpdateRequest(src.FirstName, src.LastName, src.Phone, src.IsActive, default)
+                .MapWith(src => new UserUpdateRequest(src.FirstName, src.LastName, src.Phone, src.IsActive, default!)
                 {
                     Id = src.Id
                 })

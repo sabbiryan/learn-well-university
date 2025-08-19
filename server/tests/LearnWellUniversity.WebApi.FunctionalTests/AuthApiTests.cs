@@ -18,10 +18,13 @@ namespace LearnWellUniversity.WebApi.FunctionalTests
         [Fact]
         public async Task Register_ShouldReturn401Status()
         {
+            // Arrange
             var request = new SignupRequest("Sabbir", "Ahamed", "sabbiryan@gmail.com", "abc@123!", "+8801911831907", [1]);
 
+            // Act
             var response = await HttpClient.PostAsJsonAsync($"{ApiV1}/auth/register", request);
 
+            // Assert
             response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
         }
 
@@ -29,19 +32,19 @@ namespace LearnWellUniversity.WebApi.FunctionalTests
         [Fact]
         public async Task Login_ShouldReturnAccessToken()
         {
+            // Arrange
             var request = new
             {
                 StaticUser.Admin.Email,
                 StaticUser.Admin.Password
             };
 
-            var response = await HttpClient.PostAsJsonAsync($"{ApiV1}/auth/login", request);
-            
+            // Act
+            var response = await HttpClient.PostAsJsonAsync($"{ApiV1}/auth/login", request);            
             var result = await response.Content.ReadFromJsonAsync<ApiResponse<TokenResponse>>();
 
-
-            response.EnsureSuccessStatusCode();
-            
+            // Assert
+            response.EnsureSuccessStatusCode();            
             result!.Data.Should().NotBeNull();
         }
     }

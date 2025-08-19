@@ -15,7 +15,7 @@ namespace LearnWellUniversity.WebApi.Extensions
                     .AddClasses(classes => classes.InNamespaces(servicesNamespace))
                     .AsImplementedInterfaces()
                     .WithScopedLifetime()
-                    );
+            );
 
             return services;
         }

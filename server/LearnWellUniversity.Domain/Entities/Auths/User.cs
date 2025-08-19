@@ -1,8 +1,10 @@
-﻿using LearnWellUniversity.Domain.Entities.Bases;
+﻿using LearnWellUniversity.Domain.Entities;
+using LearnWellUniversity.Domain.Entities.Auths;
+using LearnWellUniversity.Domain.Entities.Bases;
 
 namespace LearnWellUniversity.Domain.Entities.Auths
 {
-    public class User: PersonBase<int>
+    public class User : PersonBase<int>
     {
         public byte[] PasswordHash { get; set; } = default!;
         public byte[] PasswordSalt { get; set; } = default!;

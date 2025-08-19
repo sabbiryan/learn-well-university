@@ -15,7 +15,7 @@ namespace LearnWellUniversity.WebApi.FunctionalTests.Bases
         protected TokenResponse Token { get; set; } = default!;
 
 
-        protected async Task<TokenResponse> GetToken(string email, string password)
+        private async Task<TokenResponse> GetToken(string email, string password)
         {
 
             var request = new
@@ -32,5 +32,45 @@ namespace LearnWellUniversity.WebApi.FunctionalTests.Bases
 
             return result.Data;
         }
+
+
+        protected async Task<TokenResponse> GetAdminToken()
+        {
+            Token = await GetToken(StaticUser.Admin.Email, StaticUser.Admin.Password);
+         
+            return Token;
+        }
+
+        protected async Task<TokenResponse> GetStaffToken()
+        {
+            Token = await GetToken(StaticUser.Staff.Email, StaticUser.Staff.Password);
+         
+            return Token;
+        }
+
+        protected async Task<TokenResponse> GetStudentToken()
+        {
+            Token = await GetToken(StaticUser.Student.Email, StaticUser.Student.Password);
+         
+            return Token;
+        }
+
+
+        protected async Task<HttpResponseMessage> AuthorizedRequestAsync(string url, HttpMethod method, object? content = null)
+        {            
+            HttpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", Token.AccessToken);
+
+            var request = new HttpRequestMessage(method, url);
+            
+            if (content != null)
+            {
+                request.Content = JsonContent.Create(content);
+            }
+
+            var response = await HttpClient.SendAsync(request);
+            
+            return response;
+        }
+
     }
 }

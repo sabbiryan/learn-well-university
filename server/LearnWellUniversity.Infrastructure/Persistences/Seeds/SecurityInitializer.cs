@@ -1,6 +1,6 @@
-﻿using LearnWellUniversity.Application.Encryptions;
-using LearnWellUniversity.Application.Models.Statics;
+﻿using LearnWellUniversity.Application.Models.Statics;
 using LearnWellUniversity.Domain.Entities.Auths;
+using LearnWellUniversity.Infrastructure.Encryptions;
 using Microsoft.Extensions.Logging;
 
 namespace LearnWellUniversity.Infrastructure.Persistences.Seeds
@@ -33,7 +33,7 @@ namespace LearnWellUniversity.Infrastructure.Persistences.Seeds
             {
                 foreach (var user in StaticUser.AllUsers)
                 {
-                    PasswordHasher.CreatePasswordHash(user.Password, out byte[] passwordHash, out byte[] passwordSalt);
+                    var passwordHash = new PasswordHasher().CreatePasswordHash(user.Password);
 
                     context.Users.Add(new User
                     {
@@ -41,10 +41,11 @@ namespace LearnWellUniversity.Infrastructure.Persistences.Seeds
                         LastName = user.LastName,
                         Email = user.Email,
                         Phone = user.Phone,
-                        PasswordHash = passwordHash,
-                        PasswordSalt = passwordSalt
+                        PasswordHash = passwordHash.Hash,
+                        PasswordSalt = passwordHash.Salt
                     });
                 }
+
                 context.SaveChanges();
 
                 logger.LogInformation("Users seeded successfully.");
