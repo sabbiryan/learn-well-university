@@ -82,7 +82,9 @@ namespace LearnWellUniversity.Application.Services
 
             #endregion
 
-            (string accessToken, DateTime accessTokenExpiresAt) = jwtTokenGenerator.GenerateAccessToken(user, staff?.Id, studentId, userRoles.Select(x => x.Role));
+            var roleResources = await unitOfWork.Repository<RoleResource>().FilterAsync(rr => userRoles.Select(ur => ur.RoleId).Contains(rr.RoleId), rr => rr.Resource);
+
+            (string accessToken, DateTime accessTokenExpiresAt) = jwtTokenGenerator.GenerateAccessToken(user, staff?.Id, studentId, userRoles.Select(x => x.Role), roleResources.Select(rr => rr.Resource.Name));
 
             (string refreshToken, DateTime refreshTokenExpiresAt) = jwtTokenGenerator.GenerateRefreshToken();
 

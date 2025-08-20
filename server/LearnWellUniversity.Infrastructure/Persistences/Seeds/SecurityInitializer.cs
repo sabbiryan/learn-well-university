@@ -5,6 +5,7 @@ using LearnWellUniversity.Domain.Entities.Auths;
 using LearnWellUniversity.Infrastructure.Encryptions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Linq;
 
 namespace LearnWellUniversity.Infrastructure.Persistences.Seeds
 {
@@ -13,6 +14,7 @@ namespace LearnWellUniversity.Infrastructure.Persistences.Seeds
         public static void Initialize(AppDbContext context, ILogger logger)
         {
 
+            //Resources
             if(!context.Resources.Any())
             {
                 foreach (var code in PermissionCodes.GetAllPermissionCodes())
@@ -53,13 +55,14 @@ namespace LearnWellUniversity.Infrastructure.Persistences.Seeds
                     }
                 }
 
-                context.BulkInsertOrUpdateOrDelete(finalResources);
+                context.BulkInsertOrUpdate(finalResources);
 
 
                 logger.LogInformation("Resources maintanance seeded successfully.");
             }
 
 
+            //Roles
             if (!context.Roles.Any())
             {
                 foreach (var role in StaticRole.AllRoles)
@@ -78,7 +81,70 @@ namespace LearnWellUniversity.Infrastructure.Persistences.Seeds
             }
 
 
+            //Role Permissions
+            if (!context.RoleResources.Any())
+            {
+                var resources = context.Resources.AsNoTracking().Select(r => new { r.Id, r.Name }).ToList();
 
+                var adminRole = context.Roles.FirstOrDefault(r => r.Name == StaticRole.Admin.Name);
+                var staffRole = context.Roles.FirstOrDefault(r => r.Name == StaticRole.Staff.Name);
+                var teacherRole = context.Roles.FirstOrDefault(r => r.Name == StaticRole.Teacher.Name);
+                var studentRole = context.Roles.FirstOrDefault(r => r.Name == StaticRole.Student.Name);
+
+                List<RoleResource> roleResources = [];
+
+                var adminPermission = resources.Select(r => new RoleResource
+                {
+                    ResourceId = r.Id,
+                    RoleId = adminRole!.Id
+                }).ToList();
+
+                roleResources.AddRange(adminPermission);
+
+                PermissionCodes.Course.GetAll()
+                    .Concat(PermissionCodes.Class.GetAll())
+                    .Concat(PermissionCodes.Student.GetAll())
+                    .Concat(PermissionCodes.Enrollment.GetAll())
+                    .ToList()
+                    .ForEach(permissionCode =>
+                    {
+                        var resource = resources.FirstOrDefault(r => r.Name == permissionCode);
+                        if (resource != null)
+                        {
+                            roleResources.Add(new RoleResource
+                            {
+                                ResourceId = resource.Id,
+                                RoleId = staffRole!.Id
+                            });
+                        }
+                    });
+
+
+                string[] studentPermissions = [
+                    PermissionCodes.Student.ClassesFriends,
+                    PermissionCodes.Enrollment.StudentClass.EnrolledClasses,
+                    PermissionCodes.Enrollment.StudentCourse.EnrolledCourses
+                ];
+
+                var studentPermission = resources
+                    .Where(r => studentPermissions.Contains(r.Name))
+                    .Select(r => new RoleResource
+                    {
+                        ResourceId = r.Id,
+                        RoleId = studentRole!.Id
+                    }).ToList();
+
+                roleResources.AddRange(studentPermission);
+
+                context.BulkInsertOrUpdate(roleResources);
+
+                context.SaveChanges();
+
+                logger.LogInformation("Role Resources seeded succcessfully");
+            }
+
+
+            //Users
             if (!context.Users.Any())
             {
                 foreach (var user in StaticUser.AllUsers)
@@ -101,7 +167,7 @@ namespace LearnWellUniversity.Infrastructure.Persistences.Seeds
                 logger.LogInformation("Users seeded successfully.");
             }
 
-
+            //User Roles
             if (!context.UserRoles.Any())
             {
                 var adminRole = context.Roles.FirstOrDefault(r => r.Name == StaticRole.Admin.Name);

@@ -4,7 +4,7 @@ using LearnWellUniversity.Domain.Entities.Auths;
 
 namespace LearnWellUniversity.Infrastructure.Auths
 {
-    public class PermissonChecker: IPermissionChecker
+    public class PermissonChecker : IPermissionChecker
     {
         private readonly IUserContext _userContext;
         private readonly IUnitOfWork _unitOfWork;
@@ -15,6 +15,11 @@ namespace LearnWellUniversity.Infrastructure.Auths
             _unitOfWork = unitOfWork;
         }
 
+        public bool HasPermission(params string[] permissionCodes)
+        {
+            return _userContext.Permissions.Any(p => permissionCodes.Any(pc => p == pc));
+
+        }
 
         public async Task<bool> HasPermissionAsync(string permissionCode)
         {

@@ -19,6 +19,11 @@ namespace LearnWellUniversity.Application.Models.Data
             public const string Read = $"{nameof(Class)}.{nameof(Read)}";
             public const string Update = $"{nameof(Class)}.{nameof(Update)}";
             public const string Delete = $"{nameof(Class)}.{nameof(Delete)}";
+
+            public static string[] GetAll()
+            {
+                return [Create, Read, Update, Delete];
+            }
         }
 
         public static class Course
@@ -27,6 +32,11 @@ namespace LearnWellUniversity.Application.Models.Data
             public const string Read = $"{nameof(Course)}.{nameof(Read)}";
             public const string Update = $"{nameof(Course)}.{nameof(Update)}";
             public const string Delete = $"{nameof(Course)}.{nameof(Delete)}";
+          
+            public static string[] GetAll()
+            {
+                return [Create, Read, Update, Delete];
+            }
         }
 
         public static class Role
@@ -43,6 +53,7 @@ namespace LearnWellUniversity.Application.Models.Data
             public const string Read = $"{nameof(Staff)}.{nameof(Read)}";
             public const string Update = $"{nameof(Staff)}.{nameof(Update)}";
             public const string Delete = $"{nameof(Staff)}.{nameof(Delete)}";
+
         }
 
         public static class Student
@@ -52,6 +63,11 @@ namespace LearnWellUniversity.Application.Models.Data
             public const string Update = $"{nameof(Student)}.{nameof(Update)}";
             public const string Delete = $"{nameof(Student)}.{nameof(Delete)}";
             public const string ClassesFriends = $"{nameof(Student)}.{nameof(ClassesFriends)}";
+
+            public static string[] GetAll()
+            {
+                return [Create, Read, Update, Delete, ClassesFriends];
+            }
         }
 
         public static class User
@@ -60,6 +76,11 @@ namespace LearnWellUniversity.Application.Models.Data
             public const string Read = $"{nameof(User)}.{nameof(Read)}";
             public const string Update = $"{nameof(User)}.{nameof(Update)}";
             public const string Delete = $"{nameof(User)}.{nameof(Delete)}";
+
+            public static string[] GetAll()
+            {
+                return [Create, Read, Update, Delete];
+            }
         }
 
 
@@ -79,6 +100,14 @@ namespace LearnWellUniversity.Application.Models.Data
                 public const string Unenroll = $"{nameof(Enrollment)}.{nameof(StudentCourse)}.{nameof(Unenroll)}";
                 public const string EnrolledCourses = $"{nameof(Enrollment)}.{nameof(StudentCourse)}.{nameof(EnrolledCourses)}";
                 public const string EnrolledStudents = $"{nameof(Enrollment)}.{nameof(StudentCourse)}.{nameof(EnrolledStudents)}";
+            }
+
+            public static string[] GetAll()
+            {
+                return [
+                    StudentClass.Enroll, StudentClass.Unenroll, StudentClass.EnrolledClasses, StudentClass.EnrolledStudents,
+                    StudentCourse.Enroll, StudentCourse.Unenroll, StudentCourse.EnrolledCourses, StudentCourse.EnrolledStudents
+                ];
             }
         }
 

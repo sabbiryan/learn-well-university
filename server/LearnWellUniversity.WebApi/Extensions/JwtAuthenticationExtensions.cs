@@ -1,4 +1,5 @@
-﻿using LearnWellUniversity.Infrastructure.Constants;
+﻿using LearnWellUniversity.Application.Extensions;
+using LearnWellUniversity.Infrastructure.Constants;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;

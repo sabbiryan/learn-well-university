@@ -11,7 +11,7 @@ namespace LearnWellUniversity.Infrastructure.Auths
 {
     public class JwtTokenGenerator() : IJwtTokenGenerator
     {
-        public (string AccessToken, DateTime AccessTokenExpiresAt) GenerateAccessToken(User user, int? staffId, int? studentId, IEnumerable<Role> roles)
+        public (string AccessToken, DateTime AccessTokenExpiresAt) GenerateAccessToken(User user, int? staffId, int? studentId, IEnumerable<Role> roles, IEnumerable<string> permissionCodes)
         {
             var claims = new List<Claim>
             {
@@ -26,6 +26,11 @@ namespace LearnWellUniversity.Infrastructure.Auths
             {
                 claims.Add(new Claim(ClaimTypes.Role, role.Name));
                 claims.Add(new Claim(ClaimConstants.RoleId, role.Id.ToString()));
+            }
+
+            foreach (var code in permissionCodes)
+            {
+                claims.Add(new Claim(ClaimConstants.Permission, code));
             }
 
             if(staffId.HasValue)

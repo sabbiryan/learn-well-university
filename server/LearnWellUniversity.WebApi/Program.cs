@@ -1,3 +1,5 @@
+using LearnWellUniversity.Application.Extensions;
+using LearnWellUniversity.Application.Models.Data;
 using LearnWellUniversity.Infrastructure.Extensions;
 using LearnWellUniversity.WebApi.Extensions;
 using Serilog;
@@ -21,6 +23,8 @@ builder.Services.AddInfrastructureServices();
 builder.Services.RegisterApplicationServices();
 
 builder.Services.AddJwtAuthentication();
+
+builder.Services.AddAuthorizationPolicy();
 
 builder.Services.AddMapsterService();
 
