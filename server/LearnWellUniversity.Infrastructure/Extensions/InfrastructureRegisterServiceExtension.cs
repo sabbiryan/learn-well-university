@@ -25,7 +25,7 @@ namespace LearnWellUniversity.Infrastructure.Extensions
                     var interceptor = serviceProvider.GetRequiredService<AuditSaveChangesInterceptor>();
                     options.AddInterceptors(interceptor);
 
-                    options.UseNpgsql(AppSettingValues.DefaultConnectionString, npgsqlOptions =>
+                    options.UseNpgsql(AppSettingValues.ConnectionStrings.Postgres, npgsqlOptions =>
                     {
                         npgsqlOptions.EnableRetryOnFailure(5);
                         npgsqlOptions.MigrationsAssembly(typeof(AppDbContext).Assembly);
