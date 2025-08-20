@@ -23,7 +23,9 @@ namespace LearnWellUniversity.Application.Contracts.UoW
         Task<T?> FindAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes);
 
         Task<IEnumerable<T>> FilterAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes);
-        
+
+        Task<bool> AnyAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes);
+
         Task AddAsync(T entity);
         void Update(T entity);        
         void Remove(T entity);

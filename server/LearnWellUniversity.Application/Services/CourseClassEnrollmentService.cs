@@ -53,7 +53,7 @@ namespace LearnWellUniversity.Application.Services
             return mapper.Map<CourseClassDto>(courseClass);
         }
 
-        public async Task<List<CourseClassDto>> GetEnrolledClassesAsync(int courseId)
+        public async Task<List<CourseClassDto>> GetCourseEnrolledClassesAsync(int courseId)
         {
            var courseClasses = await unitOfWork.Repository<CourseClass>()
                 .FilterAsync(cc => cc.CourseId == courseId, x => x.Course, x => x.Class);
@@ -63,7 +63,7 @@ namespace LearnWellUniversity.Application.Services
             return result;
         }
 
-        public async Task<List<CourseClassDto>> GetEnrolledCoursesAsync(int classId)
+        public async Task<List<CourseClassDto>> GetClassEnrolledCoursesAsync(int classId)
         {
             var courseClasses = await unitOfWork.Repository<CourseClass>()
                 .FilterAsync(cc => cc.ClassId == classId, x => x.Course, x => x.Class);

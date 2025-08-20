@@ -17,7 +17,7 @@ namespace LearnWellUniversity.WebApi.Controllers
         {
             if (request.StudentId <= 0 || request.CourseId <= 0)
             {
-                return new ApiResponse<StudentCourseDto>("Invalid student or class ID", StatusCodes.Status400BadRequest);
+                return new ApiResponse<StudentCourseDto>("Invalid student or course ID", StatusCodes.Status400BadRequest);
             }
 
             var response = await studentCourseEntrollmentService.EnrollAsync(request);
@@ -36,7 +36,7 @@ namespace LearnWellUniversity.WebApi.Controllers
         {
             if (request.StudentId <= 0 || request.CourseId <= 0)
             {
-                return new ApiResponse<StudentCourseDto>("Invalid student or class ID", StatusCodes.Status400BadRequest);
+                return new ApiResponse<StudentCourseDto>("Invalid student or course ID", StatusCodes.Status400BadRequest);
             }
 
             var response = await studentCourseEntrollmentService.UnenrollAsync(request);
@@ -88,15 +88,15 @@ namespace LearnWellUniversity.WebApi.Controllers
         }
 
 
-        [HttpGet("GetEnrolledClasses/{courseId}")]
-        public async Task<ApiResponse<List<CourseClassDto>>> GetEnrolledClassesAsync(int courseId)
+        [HttpGet("GetCourseEnrolledClasses/{courseId}")]
+        public async Task<ApiResponse<List<CourseClassDto>>> GetCourseEnrolledClassesAsync(int courseId)
         {
             if (courseId <= 0)
             {
                 return new ApiResponse<List<CourseClassDto>>("Invalid course ID", StatusCodes.Status400BadRequest);
             }
 
-            var enrolledClasses = await courseClassEnrollmentService.GetEnrolledClassesAsync(courseId);
+            var enrolledClasses = await courseClassEnrollmentService.GetCourseEnrolledClassesAsync(courseId);
             
             if (enrolledClasses == null || enrolledClasses.Count == 0)
             {

@@ -100,7 +100,8 @@ namespace LearnWellUniversity.Application.UnitTests
                  It.IsAny<User>(),
                  It.IsAny<int?>(),
                  It.IsAny<int?>(),
-                 It.Is<IEnumerable<Role>>(r => r.Any(role => role.Name == "Admin"))
+                 It.Is<IEnumerable<Role>>(r => r.Any(role => role.Name == "Admin")),
+                 It.IsAny<IEnumerable<string>>()
                  ))
              .Returns((User u, int? staffId, int? studentId, IEnumerable<Role> roles) =>
                  ("access123", DateTime.UtcNow.AddMinutes(30))

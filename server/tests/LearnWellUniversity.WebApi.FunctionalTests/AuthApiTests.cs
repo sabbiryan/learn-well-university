@@ -16,7 +16,7 @@ namespace LearnWellUniversity.WebApi.FunctionalTests
 
 
         [Fact]
-        public async Task Register_ShouldReturn401Status()
+        public async Task RegisterAsync_ShouldReturn401Status()
         {
             // Arrange
             var request = new SignupRequest("Sabbir", "Ahamed", "sabbiryan@gmail.com", "abc@123!", "+8801911831907", [1]);
@@ -30,7 +30,7 @@ namespace LearnWellUniversity.WebApi.FunctionalTests
 
 
         [Fact]
-        public async Task Login_ShouldReturnAccessToken()
+        public async Task LoginAsync_ShouldReturnAccessToken()
         {
             // Arrange
             var request = new
@@ -40,12 +40,13 @@ namespace LearnWellUniversity.WebApi.FunctionalTests
             };
 
             // Act
-            var response = await HttpClient.PostAsJsonAsync($"{ApiV1}/auth/login", request);            
+            var response = await HttpClient.PostAsJsonAsync($"{ApiV1}/auth/login", request);
             var result = await response.Content.ReadFromJsonAsync<ApiResponse<TokenResponse>>();
 
             // Assert
-            response.EnsureSuccessStatusCode();            
+            response.EnsureSuccessStatusCode();
             result!.Data.Should().NotBeNull();
         }
     }
+
 }

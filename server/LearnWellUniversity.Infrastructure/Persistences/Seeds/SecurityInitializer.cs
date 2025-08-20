@@ -164,6 +164,37 @@ namespace LearnWellUniversity.Infrastructure.Persistences.Seeds
 
                 context.SaveChanges();
 
+                var department = context.Departments.FirstOrDefault(x => x.Name == StaticDepartment.ComputerScience.Name);
+                var staffUser =  context.Users.FirstOrDefault(x => x.Email == StaticUser.Staff.Email);
+
+                context.Staffs.Add(new Domain.Entities.Staff
+                {
+                    Code = "STFF001",
+                    FirstName = staffUser!.FirstName,
+                    LastName=staffUser!.LastName,
+                    Email = staffUser!.Email,
+                    Phone = staffUser!.Phone,
+                    UserId = staffUser!.Id,
+                    DepartmentId = department!.Id
+                });
+
+                var studentUser = context.Users.FirstOrDefault(x => x.Email == StaticUser.Student.Email);
+
+                context.Students.Add(new Domain.Entities.Student
+                {
+                    Code = "10201",
+                    FirstName = studentUser!.FirstName,
+                    LastName = studentUser!.LastName,
+                    Email = studentUser!.Email,
+                    Phone = studentUser!.Phone,
+                    UserId = studentUser!.Id,
+                    DepartmentId = department!.Id
+                });
+
+
+                context.SaveChanges();
+
+
                 logger.LogInformation("Users seeded successfully.");
             }
 

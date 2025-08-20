@@ -145,6 +145,22 @@ namespace LearnWellUniversity.Infrastructure.Persistences.UoW
             return await query.Where(predicate).ToListAsync();
         }
 
+
+        public async Task<bool> AnyAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes)
+        {
+            IQueryable<T> query = _dbSet.AsNoTracking();
+
+            if (includes != null)
+            {
+                foreach (var include in includes)
+                {
+                    query = query.Include(include);
+                }
+            }
+
+            return await query.AnyAsync(predicate);
+        }
+
         public virtual async Task AddAsync(T entity) => await _dbSet.AddAsync(entity);
 
         public virtual void Update(T entity) => _dbSet.Update(entity);

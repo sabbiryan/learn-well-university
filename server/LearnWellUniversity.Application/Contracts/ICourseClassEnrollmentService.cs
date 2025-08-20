@@ -8,7 +8,7 @@ namespace LearnWellUniversity.Application.Contracts
     {
         Task<CourseClassDto> EnrollAsync(CourseClassRequest request);
         Task<CourseClassDto> UnenrollAsync(CourseClassRequest request);
-        Task<List<CourseClassDto>> GetEnrolledClassesAsync(int courseId);
-        Task<List<CourseClassDto>> GetEnrolledCoursesAsync(int classId);
+        Task<List<CourseClassDto>> GetCourseEnrolledClassesAsync(int courseId);
+        Task<List<CourseClassDto>> GetClassEnrolledCoursesAsync(int classId);
     }
 }

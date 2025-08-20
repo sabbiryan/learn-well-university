@@ -210,14 +210,27 @@ namespace LearnWellUniversity.Application.MappingConfigs
                 .Map(dest => dest.CourseCode, src => src.Course == null ? null : src.Course.Code)
                 .Map(dest => dest.CourseName, src => src.Course == null ? null : src.Course.Name)
                 .Map(dest => dest.EnrollmentStaffName, src => src.EnrollmentStaff == null ? null : src.EnrollmentStaff.FullName)
-                .MapWith(src => new CourseClassDto(src.CourseId, src.Course.Code, src.Course.Name, src.ClassId, src.Class.Code, src.Class.Name, src.EnrollmentDate, src.EnrollmentStaffId, src.EnrollmentStaff == null ? null : src.EnrollmentStaff.FullName))
+                .MapWith(src => new CourseClassDto(
+                    src.CourseId,
+                    src.Course == null ? null : src.Course.Code,
+                    src.Course == null ? null : src.Course.Name,
+                    src.ClassId,
+                    src.Class == null ? null : src.Class.Code,
+                    src.Class == null ? null : src.Class.Name,
+                    src.EnrollmentDate,
+                    src.EnrollmentStaffId,
+                    src.EnrollmentStaff == null ? null : src.EnrollmentStaff.FullName))
                 .TwoWays();
 
             config.NewConfig<CourseClass, CourseClassRequest>()
-                .MapWith(src => new CourseClassRequest(src.CourseId, src.ClassId))
-                .TwoWays();
+                .MapWith(src => new CourseClassRequest(src.CourseId, src.ClassId));
 
-            // StudentClass and Student
+            config.NewConfig<CourseClassRequest, CourseClass>()
+                .Ignore(dest => dest.Course)
+                .Ignore(dest => dest.Class)
+                .Ignore(dest => dest.EnrollmentStaff);
+
+            // StudentClass Mappings
             config.NewConfig<StudentClass, StudentClassDto>()
                 .Map(dest => dest.ClassName, src => src.Class == null ? null : src.Class.Name)
                 .Map(dest => dest.StudentName, src => src.Student == null ? null : src.Student.FullName)
@@ -233,8 +246,15 @@ namespace LearnWellUniversity.Application.MappingConfigs
                 .TwoWays();
 
             config.NewConfig<StudentClass, StudentClassRequest>()
-                .MapWith(src => new StudentClassRequest(src.StudentId, src.ClassId))
-                .TwoWays();
+                .MapWith(src => new StudentClassRequest(src.StudentId, src.ClassId));
+
+            config.NewConfig<StudentClassRequest, StudentClass>()
+                .Ignore(dest => dest.Student)
+                .Ignore(dest => dest.Class)
+                .Ignore(dest => dest.EnrollmentStaff);
+
+            config.NewConfig<CourseClassRequest, CourseClassDto>()
+                .MapWith(src => new CourseClassDto(src.CourseId, null, null, src.ClassId, null, null, DateTime.Now, 0, null));
 
             // StudentCourse Mappings
             config.NewConfig<StudentCourse, StudentCourseDto>()
@@ -260,7 +280,12 @@ namespace LearnWellUniversity.Application.MappingConfigs
                 .TwoWays();
 
             config.NewConfig<StudentCourse, StudentCourseRequest>()
-                .MapWith(src => new StudentCourseRequest(src.StudentId, src.CourseId))
+                .MapWith(src => new StudentCourseRequest(src.StudentId, src.CourseId));
+
+            config.NewConfig<StudentCourseRequest, StudentCourse>()
+                .Ignore(dest => dest.Student)
+                .Ignore(dest => dest.Course)
+                .Ignore(dest => dest.EnrollmentStaff)
                 .TwoWays();
         }
     }

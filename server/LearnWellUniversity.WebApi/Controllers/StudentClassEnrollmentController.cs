@@ -87,15 +87,15 @@ namespace LearnWellUniversity.WebApi.Controllers
         }
 
 
-        [HttpGet("GetEnrolledCourses/{classId}")]
-        public async Task<ApiResponse<List<CourseClassDto>>> GetEnrolledCoursesAsync(int classId)
+        [HttpGet("GetClassEnrolledCourses/{classId}")]
+        public async Task<ApiResponse<List<CourseClassDto>>> GetClassEnrolledCoursesAsync(int classId)
         {
             if (classId <= 0)
             {
                 return new ApiResponse<List<CourseClassDto>>("Invalid class ID", StatusCodes.Status400BadRequest);
             }
 
-            var enrolledCourses = await courseClassEnrollmentService.GetEnrolledCoursesAsync(classId);
+            var enrolledCourses = await courseClassEnrollmentService.GetClassEnrolledCoursesAsync(classId);
             
             if (enrolledCourses == null || enrolledCourses.Count == 0)
             {

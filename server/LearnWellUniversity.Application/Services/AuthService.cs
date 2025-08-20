@@ -124,7 +124,8 @@ namespace LearnWellUniversity.Application.Services
 
             // Generate new access token
             var userRoles = await unitOfWork.Repository<UserRole>().FilterAsync(x=> x.UserId == refreshToken.UserId, x => x.Role);
-            var (AccessToken, AccessTokenExpiresAt) = jwtTokenGenerator.GenerateAccessToken(refreshToken.User, null, null, userRoles.Select(r => r.Role));
+            var roleResources = await unitOfWork.Repository<RoleResource>().FilterAsync(rr => userRoles.Select(ur => ur.RoleId).Contains(rr.RoleId), rr => rr.Resource);
+            var (AccessToken, AccessTokenExpiresAt) = jwtTokenGenerator.GenerateAccessToken(refreshToken.User, null, null, userRoles.Select(r => r.Role), roleResources.Select(rr => rr.Resource.Name));
 
             return new TokenResponse(
                 AccessToken,

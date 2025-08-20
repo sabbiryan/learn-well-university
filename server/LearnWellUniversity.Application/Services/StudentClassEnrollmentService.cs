@@ -18,14 +18,20 @@ namespace LearnWellUniversity.Application.Services
         IUserContext userContext) : IStudentClassEntrollmentService
     {
         public async Task<StudentClassDto> EnrollAsync(StudentClassRequest request)
-        {
+        {            
+            if (!await unitOfWork.Repository<Student>().AnyAsync(s => s.Id == request.StudentId))
+                throw new InvalidOperationException("Student not found.");
+
+            if (!await unitOfWork.Repository<Class>().AnyAsync(c => c.Id == request.ClassId))
+                throw new InvalidOperationException("Class not found.");
+
             var studentClass = await unitOfWork.Repository<StudentClass>()
                 .FindAsync(sc => sc.StudentId == request.StudentId && sc.ClassId == request.ClassId);
 
             if (studentClass != null)
             {
                 throw new InvalidOperationException("Already enrolled in this class.");
-            }
+            }           
 
             studentClass = mapper.Map<StudentClass>(request);
             studentClass.EnrollmentStaffId = userContext.GetTypedFromValue<int?>(userContext.StaffId);
