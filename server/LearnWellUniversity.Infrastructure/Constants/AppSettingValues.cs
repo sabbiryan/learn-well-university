@@ -14,7 +14,7 @@
             public static string Redis = string.Empty;
         }
         
-        public static class RabitMq
+        public static class RabbitMqSection
         {
             public static string Host = "localhost";
             public static string UserName = "guest";

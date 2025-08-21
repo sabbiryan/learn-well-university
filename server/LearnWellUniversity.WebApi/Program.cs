@@ -28,6 +28,10 @@ builder.Services.AddAuthorizationPolicy();
 
 builder.Services.AddMapsterService();
 
+builder.Services.AddRedis();
+
+builder.Services.AddRabbitMq(builder.Configuration);
+
 builder.Host.EnableSeqLoggerUsingSerilog();
 
 var app = builder.Build();

@@ -9,6 +9,9 @@ using LearnWellUniversity.Infrastructure.Persistences;
 using LearnWellUniversity.Infrastructure.Persistences.UoW;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using System.Configuration;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace LearnWellUniversity.Infrastructure.Extensions
 {
@@ -34,8 +37,8 @@ namespace LearnWellUniversity.Infrastructure.Extensions
 
                 }
             );
-            
-            services.AddSingleton<IPasswordHasher, PasswordHasher>();           
+
+            services.AddSingleton<IPasswordHasher, PasswordHasher>();
             services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
             services.AddScoped<IUserContext, UserContext>();
             services.AddScoped<IPermissionChecker, PermissonChecker>();
@@ -47,7 +50,8 @@ namespace LearnWellUniversity.Infrastructure.Extensions
 
 
             return services;
-        }
+        }        
 
     }
+  
 }

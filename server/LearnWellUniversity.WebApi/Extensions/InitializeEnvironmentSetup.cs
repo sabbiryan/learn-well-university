@@ -5,7 +5,7 @@ namespace LearnWellUniversity.WebApi.Extensions
 {
     public static class InitializeEnvironmentSetup
     {
-        public static void Initialize(ConfigurationManager configuration)
+        public static void Initialize(IConfiguration configuration)
         {
             AppSettingValues.IsRunningOnConatiner = string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable(AppSettingKeys.DOTNET_RUNNING_IN_CONTAINER)) ? 
                 AppSettingValues.IsRunningOnConatiner :
@@ -21,11 +21,11 @@ namespace LearnWellUniversity.WebApi.Extensions
             AppSettingValues.ConnectionStrings.Postgres = configuration.GetConnectionString(AppSettingKeys.ConnectionStrings.Postgres) ?? AppSettingValues.ConnectionStrings.Postgres;
             AppSettingValues.ConnectionStrings.Redis = configuration.GetConnectionString(AppSettingKeys.ConnectionStrings.Redis) ?? AppSettingValues.ConnectionStrings.Redis;
 
-            AppSettingValues.RabitMq.Host = configuration[AppSettingKeys.RabitMq.HostName] ?? AppSettingValues.RabitMq.Host;
-            AppSettingValues.RabitMq.UserName = configuration[AppSettingKeys.RabitMq.UserName] ?? AppSettingValues.RabitMq.UserName;
-            AppSettingValues.RabitMq.Password = configuration[AppSettingKeys.RabitMq.Password] ?? AppSettingValues.RabitMq.Password;
-            AppSettingValues.RabitMq.VirtualHost = configuration[AppSettingKeys.RabitMq.VirtualHost] ?? AppSettingValues.RabitMq.VirtualHost;
-            AppSettingValues.RabitMq.Port = int.TryParse(configuration[AppSettingKeys.RabitMq.Port], out var port) ? port : AppSettingValues.RabitMq.Port;
+            AppSettingValues.RabbitMqSection.Host = configuration[AppSettingKeys.RabitMq.HostName] ?? AppSettingValues.RabbitMqSection.Host;
+            AppSettingValues.RabbitMqSection.UserName = configuration[AppSettingKeys.RabitMq.UserName] ?? AppSettingValues.RabbitMqSection.UserName;
+            AppSettingValues.RabbitMqSection.Password = configuration[AppSettingKeys.RabitMq.Password] ?? AppSettingValues.RabbitMqSection.Password;
+            AppSettingValues.RabbitMqSection.VirtualHost = configuration[AppSettingKeys.RabitMq.VirtualHost] ?? AppSettingValues.RabbitMqSection.VirtualHost;
+            AppSettingValues.RabbitMqSection.Port = int.TryParse(configuration[AppSettingKeys.RabitMq.Port], out var port) ? port : AppSettingValues.RabbitMqSection.Port;
 
         }
 

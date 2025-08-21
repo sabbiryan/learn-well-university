@@ -1,11 +1,12 @@
 ﻿using LearnWellUniversity.Application.Contracts.Auths;
+using LearnWellUniversity.Application.Contracts.Events;
 using LearnWellUniversity.Application.Contracts.UoW;
 using LearnWellUniversity.Application.Encryptions;
 using LearnWellUniversity.Application.Models.Dtos.Auths;
+using LearnWellUniversity.Application.Models.Events;
 using LearnWellUniversity.Application.Models.Requestes.Auths;
 using LearnWellUniversity.Domain.Entities;
 using LearnWellUniversity.Domain.Entities.Auths;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
 namespace LearnWellUniversity.Application.Services
@@ -14,7 +15,8 @@ namespace LearnWellUniversity.Application.Services
         IUnitOfWork unitOfWork, 
         IJwtTokenGenerator jwtTokenGenerator,
         IPasswordHasher passwordHasher,
-        ILogger<AuthService> logger
+        ILogger<AuthService> logger,
+        IEventPublisher eventPublisher
     ) : ApplicationService, IAuthService
     {
         public async Task<SignupResponse> RegisterAsync(SignupRequest request)
@@ -89,6 +91,19 @@ namespace LearnWellUniversity.Application.Services
             (string refreshToken, DateTime refreshTokenExpiresAt) = jwtTokenGenerator.GenerateRefreshToken();
 
             await SaveRefreshTokenAsync(ipAddress, user.Id, refreshToken, refreshTokenExpiresAt);
+
+            var evt = new TokenIssuedEvent
+            {
+                UserId = user.Id.ToString(),
+                AccessToken = accessToken,
+                AccessTokenExpiresAtUtc = accessTokenExpiresAt,
+                RefreshToken = refreshToken,
+                RefreshTokenExpiresAtUtc = refreshTokenExpiresAt
+            };
+
+            var ct = new CancellationToken();
+
+            await eventPublisher.PublishAsync(EventQueues.UserTokenIssued, evt, ct);
 
 
             return new TokenResponse(accessToken, accessTokenExpiresAt, refreshToken, refreshTokenExpiresAt);
