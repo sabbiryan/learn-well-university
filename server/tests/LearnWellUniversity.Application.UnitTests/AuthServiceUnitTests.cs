@@ -23,7 +23,7 @@ namespace LearnWellUniversity.Application.UnitTests
         private readonly Mock<IJwtTokenGenerator> _jwtTokenGeneratorMock;
         private readonly Mock<IPasswordHasher> _passwordHasherMock;
         private readonly Mock<ILogger<AuthService>> _loggerMock = new();
-        private readonly Mock<IEventPublisher> _eventPublisherMock = new();
+        //private readonly Mock<IEventPublisher> _eventPublisherMock = new();
         private readonly AuthService _authService;
 
         public AuthServiceUnitTests()
@@ -36,8 +36,8 @@ namespace LearnWellUniversity.Application.UnitTests
                 __unitOfWorkMock.Object,
                 _jwtTokenGeneratorMock.Object,
                 _passwordHasherMock.Object,
-                _loggerMock.Object,
-                _eventPublisherMock.Object
+                _loggerMock.Object
+                //_eventPublisherMock.Object
             );
         }
 
@@ -62,12 +62,18 @@ namespace LearnWellUniversity.Application.UnitTests
                 }
             };
 
-            
+            var roleResourceList = new List<RoleResource>
+            {
+                new RoleResource { RoleId = 1, Resource = new Resource { Id = 1, Name = "Res1" } }
+            };
+
+
             var userRepositoryMock = new Mock<IRepository<User>>();
             var userRoleRepositoryMock = new Mock<IRepository<UserRole>>();
             var staffRepositoryMock = new Mock<IRepository<Staff>>();
             var studentRepositoryMock = new Mock<IRepository<Student>>();
-            var refreshTokenRepositoryMock = new Mock<IRepository<RefreshToken>>();
+            var roleResourceRepositoryMock = new Mock<IRepository<RoleResource>>();
+            var refreshTokenRepositoryMock = new Mock<IRepository<RefreshToken>>();            
 
             userRepositoryMock.Setup(r => r.FindAsync(It.IsAny<Expression<Func<User, bool>>>()))
                 .ReturnsAsync(user);
@@ -94,6 +100,14 @@ namespace LearnWellUniversity.Application.UnitTests
             __unitOfWorkMock.Setup(u => u.Repository<Student>())
                 .Returns(studentRepositoryMock.Object);
 
+            roleResourceRepositoryMock.Setup(r => r.FilterAsync(
+                It.IsAny<Expression<Func<RoleResource, bool>>>(),
+                It.IsAny<Expression<Func<RoleResource, object>>[]>()
+            ))
+            .ReturnsAsync(roleResourceList);
+            __unitOfWorkMock.Setup(u => u.Repository<RoleResource>())
+                .Returns(roleResourceRepositoryMock.Object);
+
 
             _passwordHasherMock.Setup(h => h.VerifyPasswordHash(request.Password, user.PasswordHash, user.PasswordSalt))
                 .Returns(true);
@@ -105,7 +119,7 @@ namespace LearnWellUniversity.Application.UnitTests
                  It.Is<IEnumerable<Role>>(r => r.Any(role => role.Name == "Admin")),
                  It.IsAny<IEnumerable<string>>()
                  ))
-             .Returns((User u, int? staffId, int? studentId, IEnumerable<Role> roles) =>
+             .Returns((User u, int? staffId, int? studentId, IEnumerable<Role> roles, IEnumerable<string> permmissionCodes) =>
                  ("access123", DateTime.UtcNow.AddMinutes(30))
              );
 

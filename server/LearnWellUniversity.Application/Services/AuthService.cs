@@ -15,8 +15,8 @@ namespace LearnWellUniversity.Application.Services
         IUnitOfWork unitOfWork, 
         IJwtTokenGenerator jwtTokenGenerator,
         IPasswordHasher passwordHasher,
-        ILogger<AuthService> logger,
-        IEventPublisher eventPublisher
+        ILogger<AuthService> logger
+        //IEventPublisher eventPublisher
     ) : ApplicationService, IAuthService
     {
         public async Task<SignupResponse> RegisterAsync(SignupRequest request)
@@ -92,18 +92,18 @@ namespace LearnWellUniversity.Application.Services
 
             await SaveRefreshTokenAsync(ipAddress, user.Id, refreshToken, refreshTokenExpiresAt);
 
-            var evt = new TokenIssuedEvent
-            {
-                UserId = user.Id.ToString(),
-                AccessToken = accessToken,
-                AccessTokenExpiresAtUtc = accessTokenExpiresAt,
-                RefreshToken = refreshToken,
-                RefreshTokenExpiresAtUtc = refreshTokenExpiresAt
-            };
+            //var evt = new TokenIssuedEvent
+            //{
+            //    UserId = user.Id.ToString(),
+            //    AccessToken = accessToken,
+            //    AccessTokenExpiresAtUtc = accessTokenExpiresAt,
+            //    RefreshToken = refreshToken,
+            //    RefreshTokenExpiresAtUtc = refreshTokenExpiresAt
+            //};
 
-            var ct = new CancellationToken();
+            //var ct = new CancellationToken();
 
-            await eventPublisher.PublishAsync(EventQueues.UserTokenIssued, evt, ct);
+            //await eventPublisher.PublishAsync(EventQueues.UserTokenIssued, evt, ct);
 
 
             return new TokenResponse(accessToken, accessTokenExpiresAt, refreshToken, refreshTokenExpiresAt);

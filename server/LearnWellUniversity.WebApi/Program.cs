@@ -28,9 +28,9 @@ builder.Services.AddAuthorizationPolicy();
 
 builder.Services.AddMapsterService();
 
-builder.Services.AddRedis();
+//builder.Services.AddRedis();
 
-builder.Services.AddRabbitMq();
+//builder.Services.AddRabbitMq();
 
 builder.Host.EnableSeqLoggerUsingSerilog();
 
