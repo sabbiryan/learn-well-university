@@ -14,6 +14,8 @@ This is a simple university course management domain project, where includes stu
 * Generic CRUD Apis (See details bellow how to use it)
 * Postgres
 * SEQ
+* RabbitMq
+* Redis
 
 ## Getting Started
 This has applciation has two external docker container dependencies, we need to ensure this two docker container service is runing. Here are the following docker command.
