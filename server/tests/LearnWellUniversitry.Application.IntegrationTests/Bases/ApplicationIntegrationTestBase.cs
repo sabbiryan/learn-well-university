@@ -33,6 +33,8 @@ namespace LearnWellUniversitry.Application.IntegrationTests.Bases
             var services = new ServiceCollection();
 
             services.AddInfrastructureServices();
+            services.AddRedis();
+            services.AddRabbitMq();
 
             services.RemoveAll<DbContextOptions<AppDbContext>>();
 

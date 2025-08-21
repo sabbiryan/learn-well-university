@@ -1,5 +1,6 @@
 ﻿using LearnWellUniversity.Application.Contracts.Caching;
 using LearnWellUniversity.Application.Models.Events;
+using LearnWellUniversity.Infrastructure.Constants;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -13,25 +14,16 @@ using System.Threading.Tasks;
 
 namespace LearnWellUniversity.Infrastructure.Messaging;
 
-public sealed class RabbitMqTokenIssuedConsumer : BackgroundService
+public sealed class RabbitMqTokenIssuedConsumer(
+   IServiceScopeFactory scopeFactory,
+   ILogger<RabbitMqTokenIssuedConsumer> logger) : BackgroundService
 {
-    private readonly ILogger<RabbitMqTokenIssuedConsumer> _logger;
-    private readonly RabbitMqOptions _options;
-    private readonly IServiceScopeFactory _scopeFactory;
+    private readonly ILogger<RabbitMqTokenIssuedConsumer> _logger = logger;
+    private readonly IServiceScopeFactory _scopeFactory = scopeFactory;
     private IConnection? _connection;
     private IChannel? _channel;
 
     private const string QueueName = EventQueues.UserTokenIssued;
-
-    public RabbitMqTokenIssuedConsumer(
-       IOptions<RabbitMqOptions> opts,
-       IServiceScopeFactory scopeFactory,
-       ILogger<RabbitMqTokenIssuedConsumer> logger)
-    {
-        _options = opts.Value;
-        _scopeFactory = scopeFactory;
-        _logger = logger;
-    }
 
     private async Task EnsureConnectionAsync(CancellationToken cancellationToken)
     {
@@ -39,16 +31,16 @@ public sealed class RabbitMqTokenIssuedConsumer : BackgroundService
 
         var factory = new ConnectionFactory
         {
-            HostName = _options.HostName,
-            Port = _options.Port,
-            UserName = _options.UserName,
-            Password = _options.Password
+            HostName = AppSettingValues.RabbitMqSection.Host,
+            Port = AppSettingValues.RabbitMqSection.Port,
+            UserName = AppSettingValues.RabbitMqSection.UserName,
+            Password = AppSettingValues.RabbitMqSection.Password
         };
 
-        _connection =  await factory.CreateConnectionAsync();
-        _channel = await _connection.CreateChannelAsync();
+        _connection =  await factory.CreateConnectionAsync(cancellationToken: cancellationToken);
+        _channel = await _connection.CreateChannelAsync(cancellationToken: cancellationToken);
 
-        await _channel.QueueDeclareAsync(queue: QueueName, durable: true, exclusive: false, autoDelete: false, arguments: null);
+        await _channel.QueueDeclareAsync(queue: QueueName, durable: true, exclusive: false, autoDelete: false, arguments: null, cancellationToken: cancellationToken);
 
         await _channel.BasicQosAsync(0, prefetchCount: 1, global: false, cancellationToken: cancellationToken);
     }
@@ -74,10 +66,7 @@ public sealed class RabbitMqTokenIssuedConsumer : BackgroundService
         try
         {
             var json = Encoding.UTF8.GetString(ea.Body.Span);
-            var msg = JsonSerializer.Deserialize<TokenIssuedEvent>(json);
-
-            if (msg is null)
-                throw new InvalidOperationException("Deserialized message is null.");
+            var msg = JsonSerializer.Deserialize<TokenIssuedEvent>(json) ?? throw new InvalidOperationException("Deserialized message is null.");
 
             using var scope = _scopeFactory.CreateScope();
             var tokenCache = scope.ServiceProvider.GetRequiredService<ITokenCache>();

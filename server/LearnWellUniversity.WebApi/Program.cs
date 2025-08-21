@@ -30,7 +30,7 @@ builder.Services.AddMapsterService();
 
 builder.Services.AddRedis();
 
-builder.Services.AddRabbitMq(builder.Configuration);
+builder.Services.AddRabbitMq();
 
 builder.Host.EnableSeqLoggerUsingSerilog();
 

@@ -1,6 +1,7 @@
 ﻿using Castle.Core.Logging;
 using FluentAssertions;
 using LearnWellUniversity.Application.Contracts.Auths;
+using LearnWellUniversity.Application.Contracts.Events;
 using LearnWellUniversity.Application.Contracts.UoW;
 using LearnWellUniversity.Application.Encryptions;
 using LearnWellUniversity.Application.Models.Encryptions;
@@ -22,6 +23,7 @@ namespace LearnWellUniversity.Application.UnitTests
         private readonly Mock<IJwtTokenGenerator> _jwtTokenGeneratorMock;
         private readonly Mock<IPasswordHasher> _passwordHasherMock;
         private readonly Mock<ILogger<AuthService>> _loggerMock = new();
+        private readonly Mock<IEventPublisher> _eventPublisherMock = new();
         private readonly AuthService _authService;
 
         public AuthServiceUnitTests()
@@ -34,7 +36,8 @@ namespace LearnWellUniversity.Application.UnitTests
                 __unitOfWorkMock.Object,
                 _jwtTokenGeneratorMock.Object,
                 _passwordHasherMock.Object,
-                _loggerMock.Object
+                _loggerMock.Object,
+                _eventPublisherMock.Object
             );
         }
 
@@ -53,8 +56,7 @@ namespace LearnWellUniversity.Application.UnitTests
 
             var roles = new List<UserRole>
             {
-                new UserRole
-                {
+                new() {
                     UserId = user.Id,
                     Role = new Role { Id = 1, Name = "Admin" }
                 }

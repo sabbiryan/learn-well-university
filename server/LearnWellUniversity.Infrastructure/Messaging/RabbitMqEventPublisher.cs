@@ -31,9 +31,9 @@ namespace LearnWellUniversity.Infrastructure.Messaging
 
         public async Task PublishAsync<T>(string queue, T payload, CancellationToken ct)
         {
-            using var channel = await _connection.CreateChannelAsync();
+            using var channel = await _connection.CreateChannelAsync(cancellationToken: ct);
 
-            await channel.QueueDeclareAsync(queue: queue, durable: true, exclusive: false, autoDelete: false, arguments: null);
+            await channel.QueueDeclareAsync(queue: queue, durable: true, exclusive: false, autoDelete: false, arguments: null, cancellationToken: ct);
 
             var json = JsonSerializer.Serialize(payload);
             var body = Encoding.UTF8.GetBytes(json);
@@ -51,12 +51,17 @@ namespace LearnWellUniversity.Infrastructure.Messaging
                 routingKey: queue, 
                 mandatory: true,
                 basicProperties: props, 
-                body: body);
+                body: body,
+                cancellationToken: ct);
 
             _logger.LogInformation("Published message to queue {Queue}", queue);
 
         }
 
-        public void Dispose() => _connection.Dispose();
+        public void Dispose()
+        {            
+            GC.SuppressFinalize(this);
+            _connection.Dispose();
+        }
     }
 }

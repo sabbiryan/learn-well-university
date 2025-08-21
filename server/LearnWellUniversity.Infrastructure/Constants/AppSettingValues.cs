@@ -16,9 +16,9 @@
         
         public static class RabbitMqSection
         {
-            public static string Host = "localhost";
-            public static string UserName = "guest";
-            public static string Password = "guest";
+            public static string Host = "learnwelluniversity.rabbitmq";
+            public static string UserName = "admin";
+            public static string Password = "pass123";
             public static string VirtualHost = "/";
             public static int Port = 5672;
         }

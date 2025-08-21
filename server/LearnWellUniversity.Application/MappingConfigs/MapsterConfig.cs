@@ -228,7 +228,7 @@ namespace LearnWellUniversity.Application.MappingConfigs
             config.NewConfig<CourseClassRequest, CourseClass>()
                 .Ignore(dest => dest.Course)
                 .Ignore(dest => dest.Class)
-                .Ignore(dest => dest.EnrollmentStaff);
+                .Ignore(dest => dest.EnrollmentStaff!);
 
             // StudentClass Mappings
             config.NewConfig<StudentClass, StudentClassDto>()
@@ -251,7 +251,7 @@ namespace LearnWellUniversity.Application.MappingConfigs
             config.NewConfig<StudentClassRequest, StudentClass>()
                 .Ignore(dest => dest.Student)
                 .Ignore(dest => dest.Class)
-                .Ignore(dest => dest.EnrollmentStaff);
+                .Ignore(dest => dest.EnrollmentStaff!);
 
             config.NewConfig<CourseClassRequest, CourseClassDto>()
                 .MapWith(src => new CourseClassDto(src.CourseId, null, null, src.ClassId, null, null, DateTime.Now, 0, null));
@@ -285,7 +285,7 @@ namespace LearnWellUniversity.Application.MappingConfigs
             config.NewConfig<StudentCourseRequest, StudentCourse>()
                 .Ignore(dest => dest.Student)
                 .Ignore(dest => dest.Course)
-                .Ignore(dest => dest.EnrollmentStaff)
+                .Ignore(dest => dest.EnrollmentStaff!)
                 .TwoWays();
         }
     }
